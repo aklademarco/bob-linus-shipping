@@ -125,6 +125,8 @@ export default function Nav() {
 
   return (
     <>
+    {/* Skip link for accessibility */}
+    <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 bg-white px-3 py-2 rounded-md text-slate-900 border border-slate-200">Skip to main content</a>
     <nav
       role="navigation"
       className="fixed inset-x-0 top-0 z-50 w-full bg-white/95 backdrop-blur-sm border-b border-gray-200"

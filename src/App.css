@@ -39,3 +39,49 @@
 .read-the-docs {
   color: #888;
 }
+
+/* Screen-reader only (visually hidden) */
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* Consistent focus-visible ring for keyboard users */
+.focus-ring:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(8, 175, 241, 0.18);
+  border-radius: 6px;
+}
+
+/* Card hover lift */
+.card-hover:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 14px 30px rgba(2,6,23,0.12);
+}
+
+/* Button subtle lift */
+.btn-lift {
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+.btn-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(8,175,241,0.12);
+}
+
+/* Modal entrance */
+.modal-panel {
+  transform: translateY(8px) scale(.99);
+  opacity: 0;
+  transition: transform .18s ease, opacity .18s ease;
+}
+.modal-panel-open {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+}
