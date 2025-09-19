@@ -1,6 +1,6 @@
 // ...ex// ...ex// ...ex// ...existing code...
 import React, { useEffect, useRef, useState } from 'react';
-import { Search, X, Menu, ChevronDown, Info, Phone, CreditCard, Package } from 'lucide-react';
+import { Search, X, Menu, ChevronDown, Info, Phone, CreditCard, Package, Home } from 'lucide-react';
 
 export default function Nav() {
   const [open, setOpen] = useState(false); // mobile menu
@@ -141,7 +141,9 @@ export default function Nav() {
           </div>
 
           {/* Desktop links */}
-          <div className="hidden md:flex items-center gap-6">
+          <div className={`hidden md:flex items-center gap-6 transition-opacity duration-200 ${searchOpen ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
+            <a href="/" onClick={() => trackNavClick('Home', '/')} className="flex items-center gap-2 text-sm text-slate-950 hover:text-[#08aff1]"><Home className="w-4 h-4 text-slate-700"/>Home</a>
+            
             <div
               className="relative"
               ref={servicesRef}
@@ -268,7 +270,7 @@ export default function Nav() {
             <a
               href="/get-quote"
               onClick={() => trackNavClick('Get a Quote', '/get-quote')}
-              className="hidden md:inline-flex items-center gap-2 px-4 py-2 rounded-md bg-[#08aff1] text-white text-sm font-medium hover:bg-[#5bc6f0]"
+              className={`hidden md:inline-flex items-center gap-2 px-4 py-2 rounded-md bg-[#08aff1] text-white text-sm font-medium hover:bg-[#5bc6f0] transition-opacity duration-200 ${searchOpen ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
             >
               <CreditCard className="w-4 h-4 text-white" />
               Get a Quote
@@ -291,6 +293,8 @@ export default function Nav() {
       {/* Mobile menu (collapsible) */}
       <div className={`md:hidden overflow-hidden transition-[max-height] duration-200 ease-out ${open ? 'max-h-96' : 'max-h-0'}`}>
         <div className="px-4 py-3 space-y-2 bg-white/95">
+          <a href="/" onClick={() => setOpen(false)} className="flex items-center justify-center gap-2 text-sm text-slate-700 text-center"><Home className="w-4 h-4"/>Home</a>
+          
           {/* Mobile Services collapsible - centered label + right chevron */}
           <div className="relative" data-services>
             <button
