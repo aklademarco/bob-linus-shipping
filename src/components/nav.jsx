@@ -63,6 +63,7 @@ export default function Nav() {
         setServicesPersist(false);
         setSearchOpen(false);
         setOpen(false);
+        setOverlaySearchOpen(false);
       }
     }
     if (servicesOpen || searchOpen || open) window.addEventListener('keydown', onKey);
@@ -270,9 +271,9 @@ export default function Nav() {
 
     {/* Overlay search (Apple/Samsung-like) */}
     {overlaySearchOpen && (
-      <div className="fixed inset-0 z-60 flex items-start sm:items-center justify-center p-4 bg-black/50" role="dialog" aria-modal="true">
+      <div onPointerDown={() => setOverlaySearchOpen(false)} className="fixed inset-0 z-60 flex items-start sm:items-center justify-center p-4 bg-black/50" role="dialog" aria-modal="true">
         <div className="w-full max-w-lg mt-8 sm:mt-0">
-          <form onSubmit={handleOverlaySearchSubmit} className="bg-white rounded-xl shadow-lg p-4">
+          <form onSubmit={handleOverlaySearchSubmit} onPointerDown={(e) => e.stopPropagation()} className="bg-white rounded-xl shadow-lg p-4">
             <div className="flex items-center gap-3">
                 <input
                   ref={overlaySearchInputRef}
