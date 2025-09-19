@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { ChevronRight, ChevronLeft, Truck, Warehouse, Home, Shield, Clock, Users, Award, Phone, Mail, Facebook, Twitter, Linkedin, Instagram, Youtube } from 'lucide-react';
+import { ChevronRight, ChevronLeft, Truck, Warehouse, Home, Shield, Clock, Users, Award, Phone, Mail, Facebook, Twitter, Linkedin, Instagram, Youtube, Package, Plane, Ship, Box, Globe, DoorOpen, Navigation } from 'lucide-react';
 
 export default function HomePage() {
   const [quoteOpen, setQuoteOpen] = useState(false);
@@ -8,9 +8,13 @@ export default function HomePage() {
   const [quoteDetails, setQuoteDetails] = useState('');
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+  const [yearsCount, setYearsCount] = useState(0);
+  const [clientsCount, setClientsCount] = useState(0);
+  const [hasAnimated, setHasAnimated] = useState(false);
   const quoteFirstRef = useRef(null);
   const quoteLastRef = useRef(null);
   const ctaRef = useRef(null);
+  const experienceSectionRef = useRef(null);
 
   const heroSlides = [
     {
@@ -114,6 +118,58 @@ export default function HomePage() {
     return () => document.removeEventListener('keydown', onKey);
   }, [quoteOpen]);
 
+  // Count-up animation effect with intersection observer
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !hasAnimated) {
+            setHasAnimated(true);
+            const yearsTarget = 20;
+            const clientsTarget = 1000;
+            const duration = 2000; // 2 seconds
+            const yearsIncrement = yearsTarget / (duration / 50); // Update every 50ms
+            const clientsIncrement = clientsTarget / (duration / 50);
+            
+            const interval = setInterval(() => {
+              setYearsCount(prev => {
+                const next = prev + yearsIncrement;
+                return next >= yearsTarget ? yearsTarget : next;
+              });
+              
+              setClientsCount(prev => {
+                const next = prev + clientsIncrement;
+                return next >= clientsTarget ? clientsTarget : next;
+              });
+            }, 50);
+
+            // Clean up after animation completes
+            setTimeout(() => {
+              clearInterval(interval);
+              setYearsCount(yearsTarget);
+              setClientsCount(clientsTarget);
+            }, duration);
+          }
+        });
+      },
+      {
+        threshold: 0.3, // Trigger when 30% of the section is visible
+        rootMargin: '0px 0px -100px 0px' // Trigger slightly before the section is fully in view
+      }
+    );
+
+    const currentElement = experienceSectionRef.current;
+    if (currentElement) {
+      observer.observe(currentElement);
+    }
+
+    return () => {
+      if (currentElement) {
+        observer.unobserve(currentElement);
+      }
+    };
+  }, [hasAnimated]); // Depend on hasAnimated to prevent re-running
+
   return (
     <div id="main" className="min-h-screen">
       {/* Hero Carousel Section - Full Width Background */}
@@ -173,7 +229,7 @@ export default function HomePage() {
                   onClick={openQuote} 
                   className="bg-[#08aff1] text-white px-8 sm:px-10 py-3 sm:py-4 rounded-lg text-base sm:text-lg font-semibold hover:bg-[#0694d1] transition-all duration-200 transform hover:-translate-y-0.5 hover:shadow-2xl flex items-center gap-2 justify-center focus:outline-none focus:ring-4 focus:ring-[#08aff1]/30 focus:ring-offset-2 w-full sm:w-auto sm:min-w-[200px] shadow-lg"
                 >
-                  Get Quote Now
+                  Track Shipment
                   <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
                 </button>
                 <button className="border-2 border-white text-white px-8 sm:px-10 py-3 sm:py-4 rounded-lg text-base sm:text-lg font-semibold hover:bg-white hover:text-gray-900 transition-all duration-200 hover:shadow-2xl focus:outline-none focus:ring-4 focus:ring-white/30 focus:ring-offset-2 w-full sm:w-auto sm:min-w-[200px] shadow-lg backdrop-blur-sm">
@@ -250,9 +306,7 @@ export default function HomePage() {
             {/* Air Freight Forwarding */}
             <div className="text-center group">
               <div className="w-24 h-24 mx-auto mb-6 flex items-center justify-center">
-                <svg className="w-20 h-20 text-slate-600 group-hover:text-[#08aff1] transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
-                </svg>
+                <Plane className="w-20 h-20 text-slate-600 group-hover:text-[#08aff1] transition-colors" />
               </div>
               <h3 className="text-2xl font-bold text-slate-900 mb-4">Air Freight Forwarding</h3>
               <p className="text-slate-600 leading-relaxed">
@@ -264,10 +318,7 @@ export default function HomePage() {
             {/* Ocean Freight Forwarding */}
             <div className="text-center group">
               <div className="w-24 h-24 mx-auto mb-6 flex items-center justify-center">
-                <svg className="w-20 h-20 text-slate-600 group-hover:text-[#08aff1] transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"/>
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 12l-2-2m2 2l2-2m-2 2v6"/>
-                </svg>
+                <Ship className="w-20 h-20 text-slate-600 group-hover:text-[#08aff1] transition-colors" />
               </div>
               <h3 className="text-2xl font-bold text-slate-900 mb-4">Ocean Freight Forwarding</h3>
               <p className="text-slate-600 leading-relaxed">
@@ -319,9 +370,7 @@ export default function HomePage() {
             {/* Packaging And Storage */}
             <div className="border border-slate-700 p-6 rounded-lg hover:border-[#08aff1] transition-all duration-300 group hover:-translate-y-1 hover:shadow-xl animate-fade-up" style={{ animationDelay: '0.1s' }}>
               <div className="w-12 h-12 mb-4 group-hover:scale-110 transition-transform duration-300">
-                <svg className="w-12 h-12 text-white group-hover:text-[#08aff1] transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M9 21h6"/>
-                </svg>
+                <Box className="w-12 h-12 text-white group-hover:text-[#08aff1] transition-colors duration-300" />
               </div>
               <h3 className="text-xl font-bold mb-3 group-hover:text-[#08aff1] transition-colors duration-300">Packaging And Storage</h3>
               <p className="text-gray-400 text-sm leading-relaxed">
@@ -332,9 +381,7 @@ export default function HomePage() {
             {/* Cargo */}
             <div className="border border-slate-700 p-6 rounded-lg hover:border-[#08aff1] transition-all duration-300 group hover:-translate-y-1 hover:shadow-xl animate-fade-up" style={{ animationDelay: '0.2s' }}>
               <div className="w-12 h-12 mb-4 group-hover:scale-110 transition-transform duration-300">
-                <svg className="w-12 h-12 text-white group-hover:text-[#08aff1] transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
-                </svg>
+                <Package className="w-12 h-12 text-white group-hover:text-[#08aff1] transition-colors duration-300" />
               </div>
               <h3 className="text-xl font-bold mb-3 group-hover:text-[#08aff1] transition-colors duration-300">Cargo</h3>
               <p className="text-gray-400 text-sm leading-relaxed">
@@ -345,9 +392,7 @@ export default function HomePage() {
             {/* Worldwide Transport - Standard Styling */}
             <div className="border border-slate-700 p-6 rounded-lg hover:border-[#08aff1] transition-all duration-300 group hover:-translate-y-1 hover:shadow-xl animate-fade-up" style={{ animationDelay: '0.3s' }}>
               <div className="w-12 h-12 mb-4 group-hover:scale-110 transition-transform duration-300">
-                <svg className="w-12 h-12 text-white group-hover:text-[#08aff1] transition-colors duration-300" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM21 9V7L15 1H5C3.9 1 3 1.9 3 3V19C3 20.1 3.9 21 5 21H11V19H5V3H13V7H17V9H21ZM18 12C16.3 12 15 13.3 15 15S16.3 18 18 18 21 16.7 21 15 19.7 12 18 12ZM18 20C15.8 20 14 18.2 14 16S15.8 12 18 12 22 13.8 22 16 20.2 20 18 20Z"/>
-                </svg>
+                <Globe className="w-12 h-12 text-white group-hover:text-[#08aff1] transition-colors duration-300" />
               </div>
               <h3 className="text-xl font-bold mb-3 group-hover:text-[#08aff1] transition-colors duration-300">Worldwide Transport</h3>
               <p className="text-gray-400 text-sm leading-relaxed">
@@ -370,9 +415,7 @@ export default function HomePage() {
             {/* Door to Door Delivery */}
             <div className="border border-slate-700 p-6 rounded-lg hover:border-[#08aff1] transition-all duration-300 group hover:-translate-y-1 hover:shadow-xl animate-fade-up" style={{ animationDelay: '0.5s' }}>
               <div className="w-12 h-12 mb-4 group-hover:scale-110 transition-transform duration-300">
-                <svg className="w-12 h-12 text-white group-hover:text-[#08aff1] transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2v0a2 2 0 012-2h14a2 2 0 012 2v0"/>
-                </svg>
+                <DoorOpen className="w-12 h-12 text-white group-hover:text-[#08aff1] transition-colors duration-300" />
               </div>
               <h3 className="text-xl font-bold mb-3 group-hover:text-[#08aff1] transition-colors duration-300">Door to Door Delivery</h3>
               <p className="text-gray-400 text-sm leading-relaxed">
@@ -384,10 +427,7 @@ export default function HomePage() {
             {/* Ground Transport */}
             <div className="border border-slate-700 p-6 rounded-lg hover:border-[#08aff1] transition-all duration-300 group hover:-translate-y-1 hover:shadow-xl animate-fade-up" style={{ animationDelay: '0.6s' }}>
               <div className="w-12 h-12 mb-4 group-hover:scale-110 transition-transform duration-300">
-                <svg className="w-12 h-12 text-white group-hover:text-[#08aff1] transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM21 17a2 2 0 11-4 0 2 2 0 014 0z"/>
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/>
-                </svg>
+                <Truck className="w-12 h-12 text-white group-hover:text-[#08aff1] transition-colors duration-300" />
               </div>
               <h3 className="text-xl font-bold mb-3 group-hover:text-[#08aff1] transition-colors duration-300">Ground Transport</h3>
               <p className="text-gray-400 text-sm leading-relaxed">
@@ -443,9 +483,7 @@ export default function HomePage() {
                 {/* Mobile Shipment Tracking */}
                 <div className="flex gap-6 relative z-10 animate-slide-up" style={{ animationDelay: '0.3s' }}>
                   <div className="w-16 h-16 bg-blue-100 hover:bg-[#08aff1] rounded-full flex items-center justify-center flex-shrink-0 transition-all duration-300 group hover:scale-110 hover:shadow-lg">
-                    <svg className="w-8 h-8 text-blue-600 group-hover:text-white transition-all duration-300 group-hover:rotate-3" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM21 9V7L15 1H5C3.9 1 3 1.9 3 3V19C3 20.1 3.9 21 5 21H11V19H5V3H13V7H17V9H21ZM18 12C16.3 12 15 13.3 15 15S16.3 18 18 18 21 16.7 21 15 19.7 12 18 12ZM18 20C15.8 20 14 18.2 14 16S15.8 12 18 12 22 13.8 22 16 20.2 20 18 20Z"/>
-                    </svg>
+                    <Navigation className="w-8 h-8 text-blue-600 group-hover:text-white transition-all duration-300 group-hover:rotate-3" />
                   </div>
                   <div>
                     <h3 className="text-xl font-bold text-slate-900 mb-3">Mobile Shipment Tracking</h3>
@@ -552,7 +590,7 @@ export default function HomePage() {
       </section>
 
       {/* Our Experience Section */}
-      <section className="py-20 bg-white">
+      <section ref={experienceSectionRef} className="py-20 bg-white">
         <div className="w-full px-4">
           <div className="grid lg:grid-cols-2 gap-8 items-center">
             <div className="space-y-6">
@@ -565,11 +603,11 @@ export default function HomePage() {
               </p>
               <div className="grid grid-cols-2 gap-6 pt-6">
                 <div className="text-center p-6 bg-slate-50 rounded-xl">
-                  <div className="text-3xl font-bold text-[#08aff1] mb-2">20+</div>
+                  <div className="text-3xl font-bold text-[#08aff1] mb-2">{Math.floor(yearsCount)}+</div>
                   <div className="text-slate-600">Years Experience</div>
                 </div>
                 <div className="text-center p-6 bg-slate-50 rounded-xl">
-                  <div className="text-3xl font-bold text-[#08aff1] mb-2">1000+</div>
+                  <div className="text-3xl font-bold text-[#08aff1] mb-2">{Math.floor(clientsCount)}+</div>
                   <div className="text-slate-600">Happy Clients</div>
                 </div>
               </div>
@@ -613,6 +651,140 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Contact Section */}
+      <section className="py-20 bg-white">
+        <div className="w-full px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-slate-900 mb-4">Get In Touch</h2>
+            <div className="w-16 h-1 bg-[#08aff1] mx-auto mb-8"></div>
+            <p className="text-xl text-slate-600">Ready to ship? Contact us today for a quote</p>
+          </div>
+
+          {/* Contact Information - Horizontal Layout */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+            <div className="text-center animate-fade-up" style={{ animationDelay: '0.1s' }}>
+              <div className="w-16 h-16 bg-[#08aff1] rounded-full flex items-center justify-center mx-auto mb-4 transform transition-all duration-300 hover:scale-110 hover:shadow-lg">
+                <Phone className="w-8 h-8 text-white" />
+              </div>
+              <h3 className="text-xl font-bold text-slate-900 mb-2">Phone</h3>
+              <p className="text-slate-600 text-lg">+233 303 204 743</p>
+              <p className="text-sm text-slate-500 mt-1">Mon — Sat: 9AM — 4PM (GMT)</p>
+            </div>
+
+            <div className="text-center animate-fade-up" style={{ animationDelay: '0.2s' }}>
+              <div className="w-16 h-16 bg-[#08aff1] rounded-full flex items-center justify-center mx-auto mb-4 transform transition-all duration-300 hover:scale-110 hover:shadow-lg">
+                <Mail className="w-8 h-8 text-white" />
+              </div>
+              <h3 className="text-xl font-bold text-slate-900 mb-2">Email</h3>
+              <p className="text-slate-600 text-lg">info@bob-linus.com</p>
+              <p className="text-sm text-slate-500 mt-1">We typically respond within 24 hours</p>
+            </div>
+
+            <div className="text-center animate-fade-up" style={{ animationDelay: '0.3s' }}>
+              <div className="w-16 h-16 bg-[#08aff1] rounded-full flex items-center justify-center mx-auto mb-4 transform transition-all duration-300 hover:scale-110 hover:shadow-lg">
+                <Navigation className="w-8 h-8 text-white" />
+              </div>
+              <h3 className="text-xl font-bold text-slate-900 mb-2">Address</h3>
+              <p className="text-slate-600 text-lg">123 Shipping Lane</p>
+              <p className="text-slate-600 text-lg">Accra, Ghana</p>
+              <p className="text-sm text-slate-500 mt-1">Visit us during business hours</p>
+            </div>
+          </div>
+
+          {/* Form and Map Side by Side */}
+          <div className="grid lg:grid-cols-2 gap-12 items-start">
+            {/* Contact Form */}
+            <div className="bg-slate-50 p-8 rounded-2xl">
+              <h3 className="text-2xl font-bold text-slate-900 mb-6">Send Message</h3>
+              <form className="space-y-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="sr-only" htmlFor="contact-form-name">Your name</label>
+                    <input
+                      id="contact-form-name"
+                      name="name"
+                      type="text"
+                      placeholder="Your Name *"
+                      required
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg text-slate-900 placeholder-slate-500 focus:border-[#08aff1] focus:outline-none focus:ring-2 focus:ring-[#08aff1]/20"
+                    />
+                  </div>
+                  <div>
+                    <label className="sr-only" htmlFor="contact-form-email">Your email</label>
+                    <input
+                      id="contact-form-email"
+                      name="email"
+                      type="email"
+                      placeholder="Your Email *"
+                      required
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg text-slate-900 placeholder-slate-500 focus:border-[#08aff1] focus:outline-none focus:ring-2 focus:ring-[#08aff1]/20"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="sr-only" htmlFor="contact-form-subject">Subject</label>
+                    <input
+                      id="contact-form-subject"
+                      name="subject"
+                      type="text"
+                      placeholder="Subject *"
+                      required
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg text-slate-900 placeholder-slate-500 focus:border-[#08aff1] focus:outline-none focus:ring-2 focus:ring-[#08aff1]/20"
+                    />
+                  </div>
+                  <div>
+                    <label className="sr-only" htmlFor="contact-form-phone">Phone</label>
+                    <input
+                      id="contact-form-phone"
+                      name="phone"
+                      type="tel"
+                      placeholder="Phone Number"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg text-slate-900 placeholder-slate-500 focus:border-[#08aff1] focus:outline-none focus:ring-2 focus:ring-[#08aff1]/20"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="sr-only" htmlFor="contact-form-message">Your message</label>
+                  <textarea
+                    id="contact-form-message"
+                    name="message"
+                    placeholder="Your Message *"
+                    rows="5"
+                    required
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg text-slate-900 placeholder-slate-500 focus:border-[#08aff1] focus:outline-none focus:ring-2 focus:ring-[#08aff1]/20 resize-none"
+                  ></textarea>
+                </div>
+
+                <button
+                  type="submit"
+                  className="w-full bg-[#08aff1] text-white py-3 px-6 rounded-lg font-semibold hover:bg-[#0694d1] transition-colors focus:outline-none focus:ring-2 focus:ring-[#08aff1] focus:ring-offset-2"
+                >
+                  Send Message
+                </button>
+              </form>
+            </div>
+
+            {/* Map Section */}
+            <div className="bg-slate-100 rounded-2xl overflow-hidden shadow-lg">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3970.8674777896916!2d-0.3198147842602!3d5.5911726953124!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xfdfa363c4d71f7d%3A0xccb7b3989f8c64e1!2sBob-Linus%20Shipping%20Co.%20Behind%20Jehova%20Witness%20Church%20Comm.%204%20Accra%20Ghana!5e0!3m2!1sen!2s!4v1735593847392!5m2!1sen!2s"
+                width="100%"
+                height="384"
+                style={{ border: 0 }}
+                allowFullScreen=""
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="Bob-Linus Shipping Location"
+                className="w-full h-96"
+              ></iframe>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Awards Section */}
       <section className="py-20 bg-white">
         <div className="w-full px-4">
@@ -638,81 +810,10 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Contact Section */}
-      <section className="py-20 bg-slate-900 text-white">
-        <div className="w-full px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-4">Get In Touch</h2>
-            <p className="text-xl text-slate-300">Ready to ship? Contact us today for a quote</p>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-8">
-            <div className="space-y-8">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-[#08aff1] rounded-full flex items-center justify-center">
-                  <Phone className="w-6 h-6 text-white" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold">Phone</h3>
-                  <p className="text-slate-300">+233 303 204 743</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-[#08aff1] rounded-full flex items-center justify-center">
-                  <Mail className="w-6 h-6 text-white" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold">Email</h3>
-                  <p className="text-slate-300">info@bob-linus.com</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-slate-800 p-8 rounded-2xl">
-              <h3 className="text-2xl font-bold mb-6">Send Message</h3>
-              <form className="space-y-4">
-                <label className="sr-only" htmlFor="contact-name">Your name</label>
-                <input
-                  id="contact-name"
-                  name="name"
-                  type="text"
-                  placeholder="Your Name"
-                  required
-                  className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:border-[#08aff1] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#08aff1]"
-                />
-
-                <label className="sr-only" htmlFor="contact-email">Your email</label>
-                <input
-                  id="contact-email"
-                  name="email"
-                  type="email"
-                  placeholder="Your Email"
-                  required
-                  className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:border-[#08aff1] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#08aff1]"
-                />
-
-                <label className="sr-only" htmlFor="contact-message">Your message</label>
-                <textarea
-                  id="contact-message"
-                  name="message"
-                  placeholder="Your Message"
-                  rows="4"
-                  required
-                  className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:border-[#08aff1] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#08aff1] resize-none"
-                ></textarea>
-                <button className="w-full bg-[#08aff1] text-white py-3 rounded-lg font-semibold hover:bg-[#5bc6f0] transition-colors">
-                  Send Message
-                </button>
-              </form>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Footer */}
       <footer className="bg-slate-900 text-white py-16">
         <div className="w-full px-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 mb-12">
             
             {/* Quick Links */}
             <div>
@@ -753,46 +854,25 @@ export default function HomePage() {
               </ul>
             </div>
 
-            {/* Contact & Follow Us */}
+            {/* Social Media */}
             <div>
-              <h3 className="text-lg font-bold mb-6 text-white">Contact & Follow Us</h3>
-              <div className="space-y-4 mb-6">
-                <div className="flex items-center gap-3">
-                  <Phone className="w-5 h-5 text-[#08aff1]" />
-                  <div>
-                    <p className="text-slate-300 text-sm">Phone</p>
-                    <p className="text-white font-medium">+233 303 204 743</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <Mail className="w-5 h-5 text-[#08aff1]" />
-                  <div>
-                    <p className="text-slate-300 text-sm">Email</p>
-                    <p className="text-white font-medium">info@bob-linus.com</p>
-                  </div>
-                </div>
-              </div>
-              
-              {/* Social Media */}
-              <div>
-                <p className="text-sm font-medium text-slate-300 mb-4">Follow Us</p>
-                <div className="flex gap-4">
-                  <a href="#" className="w-10 h-10 bg-slate-800 rounded-full flex items-center justify-center hover:bg-[#08aff1] transition-colors">
-                    <Facebook className="w-5 h-5" />
-                  </a>
-                  <a href="#" className="w-10 h-10 bg-slate-800 rounded-full flex items-center justify-center hover:bg-[#08aff1] transition-colors">
-                    <Twitter className="w-5 h-5" />
-                  </a>
-                  <a href="#" className="w-10 h-10 bg-slate-800 rounded-full flex items-center justify-center hover:bg-[#08aff1] transition-colors">
-                    <Linkedin className="w-5 h-5" />
-                  </a>
-                  <a href="#" className="w-10 h-10 bg-slate-800 rounded-full flex items-center justify-center hover:bg-[#08aff1] transition-colors">
-                    <Instagram className="w-5 h-5" />
-                  </a>
-                  <a href="#" className="w-10 h-10 bg-slate-800 rounded-full flex items-center justify-center hover:bg-[#08aff1] transition-colors">
-                    <Youtube className="w-5 h-5" />
-                  </a>
-                </div>
+              <h3 className="text-lg font-bold mb-6 text-white">Follow Us</h3>
+              <div className="flex gap-4">
+                <a href="#" className="w-10 h-10 bg-slate-800 rounded-full flex items-center justify-center hover:bg-[#08aff1] transition-colors">
+                  <Facebook className="w-5 h-5" />
+                </a>
+                <a href="#" className="w-10 h-10 bg-slate-800 rounded-full flex items-center justify-center hover:bg-[#08aff1] transition-colors">
+                  <Twitter className="w-5 h-5" />
+                </a>
+                <a href="#" className="w-10 h-10 bg-slate-800 rounded-full flex items-center justify-center hover:bg-[#08aff1] transition-colors">
+                  <Linkedin className="w-5 h-5" />
+                </a>
+                <a href="#" className="w-10 h-10 bg-slate-800 rounded-full flex items-center justify-center hover:bg-[#08aff1] transition-colors">
+                  <Instagram className="w-5 h-5" />
+                </a>
+                <a href="#" className="w-10 h-10 bg-slate-800 rounded-full flex items-center justify-center hover:bg-[#08aff1] transition-colors">
+                  <Youtube className="w-5 h-5" />
+                </a>
               </div>
             </div>
           </div>
