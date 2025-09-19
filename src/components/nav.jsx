@@ -85,7 +85,7 @@ export default function Nav() {
           <div className="flex items-center gap-3">
             <img src="/images/logo.png" alt="Bob-Linus logo" className="w-12 h-12 object-contain" />
             <div className="leading-tight">
-              <span className="block font-bold text-slate-950 text-2xl">Bob-Linus</span>
+              <span className="block font-bold text-slate-950 text-xl md:text-2xl">Bob-Linus</span>
               <small className="block text-xs text-slate-950">Shipping & Logistics</small>
             </div>
           </div>
@@ -146,7 +146,7 @@ export default function Nav() {
                   ref={searchInputRef}
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
-                  className="flex-1 border rounded-md px-2 py-1 text-sm"
+                  className="flex-1 border rounded-md px-2 py-1 text-sm text-black"
                   placeholder="Search services..."
                   aria-label="Search services"
                 />
