@@ -101,10 +101,9 @@ export default function Nav() {
 
   function handleSearchSubmit(e) {
     e.preventDefault();
-    // implement search navigation / behaviour here
+
     console.log('search:', query);
-    // optionally close search on submit:
-    // setSearchOpen(false);
+   
   }
 
   function handleOverlaySearchSubmit(e) {
@@ -122,7 +121,6 @@ export default function Nav() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Brand (not a link) */}
-          {/* Make the brand non-shrinking and prevent inner text wrapping on small screens */}
           <div className="flex items-center gap-3 flex-shrink-0">
             <img src="/images/logo.png" alt="Bob-Linus logo" className="w-12 h-12 object-contain" />
             <div className="leading-tight whitespace-nowrap">
@@ -161,7 +159,7 @@ export default function Nav() {
                 aria-hidden={!servicesOpen}
               >
                 <div className="py-2">
-                  {/* paste your service links here (unique hrefs) */}
+                 
                   <a href="#transport" role="menuitem" className="block px-4 py-2 text-sm text-slate-700 hover:bg-[#08aff1] hover:text-white">Transport Services</a>
                   <a href="#trans-shipment" role="menuitem" className="block px-4 py-2 text-sm text-slate-700 hover:bg-[#08aff1] hover:text-white">Trans-Shipment</a>
                   <a href="#warehousing" role="menuitem" className="block px-4 py-2 text-sm text-slate-700 hover:bg-[#08aff1] hover:text-white">Warehousing Services</a>
@@ -175,7 +173,7 @@ export default function Nav() {
             <a href="#about" onClick={() => trackNavClick('About', '#about')} className="flex items-center gap-2 text-sm text-slate-950 hover:text-[#08aff1]"><Info className="w-4 h-4 text-slate-700"/>About</a>
             <a href="#contact" onClick={() => trackNavClick('Contact', '#contact')} className="flex items-center gap-2 text-sm text-slate-950 hover:text-[#08aff1]"><Phone className="w-4 h-4 text-slate-700"/>Contact</a>
 
-            {/* Desktop tracking dropdown (like Services) */}
+            {/* Desktop tracking dropdown*/}
             <div className="relative" data-tracking>
               <button
                 type="button"
@@ -211,7 +209,6 @@ export default function Nav() {
 
           {/* CTA + Mobile toggle */}
           <div className="flex items-center gap-2">
-            {/* Mobile inline search removed — overlay search icon below opens the fullscreen search */}
             {/* mobile overlay search opener (shows full-screen site-style search) */}
             <div className="md:hidden">
               <button
@@ -260,8 +257,6 @@ export default function Nav() {
               <CreditCard className="w-4 h-4 text-white" />
               Get a Quote
             </a>
-
-            {/* removed duplicate desktop tracking form - tracking is handled via the Track dropdown above */}
 
             {/* mobile menu toggle */}
             <button
@@ -333,7 +328,19 @@ export default function Nav() {
             <div id="tracking-menu-mobile" className={`overflow-hidden transition-[max-height] duration-200 ${trackingOpen ? 'max-h-40' : 'max-h-0'}`}>
               <div className="px-4 pt-3 pb-2">
                 <form onSubmit={(e) => { handleTrackSubmit(e); setOpen(false); }} className="flex items-center gap-2" data-tracking>
-                  <input ref={trackingRef} value={trackingId} onChange={(e) => setTrackingId(e.target.value)} placeholder="Tracking ID" className="flex-1 px-2 py-1 border rounded-md text-sm text-black placeholder:text-slate-400" />
+                  {/* Underline-style input with blinking caret */}
+                  <div className="flex-1">
+                    <label htmlFor="mobile-tracking" className="sr-only">Tracking ID</label>
+                    <input
+                      id="mobile-tracking"
+                      ref={trackingRef}
+                      value={trackingId}
+                      onChange={(e) => setTrackingId(e.target.value)}
+                      placeholder="Tracking ID"
+                      className="w-full bg-transparent border-0 border-b-2 border-slate-300 focus:border-[#08aff1] text-base text-black placeholder:text-slate-400 px-0 py-2 outline-none"
+                      style={{ caretColor: '#08aff1' }}
+                    />
+                  </div>
                   <button type="submit" className="px-3 py-1 bg-[#08aff1] text-white rounded-md text-sm flex items-center gap-2">
                     <Search className="w-4 h-4" color="#334155" />
                     Track
