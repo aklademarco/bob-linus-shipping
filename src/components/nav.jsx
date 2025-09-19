@@ -10,6 +10,8 @@ export default function Nav() {
   const servicesRef = useRef(null);
   const searchRef = useRef(null);
   const searchInputRef = useRef(null);
+  const overlaySearchInputRef = useRef(null);
+  const [overlaySearchOpen, setOverlaySearchOpen] = useState(false);
 
   // close dropdowns/search when clicking outside (use pointerdown for touch/mouse)
   useEffect(() => {
@@ -32,6 +34,15 @@ export default function Nav() {
     }
     return () => clearTimeout(id);
   }, [searchOpen]);
+
+  // focus overlay search input when opened
+  useEffect(() => {
+    let id;
+    if (overlaySearchOpen) {
+      id = setTimeout(() => overlaySearchInputRef.current?.focus(), 60);
+    }
+    return () => clearTimeout(id);
+  }, [overlaySearchOpen]);
 
   // when services open, focus the first visible service link for keyboard users
   useEffect(() => {
@@ -74,7 +85,14 @@ export default function Nav() {
     // setSearchOpen(false);
   }
 
+  function handleOverlaySearchSubmit(e) {
+    e.preventDefault();
+    console.log('overlay search:', query);
+    setOverlaySearchOpen(false);
+  }
+
   return (
+    <>
     <nav
       role="navigation"
       className="fixed inset-x-0 top-0 z-50 w-full bg-white/95 backdrop-blur-sm border-b border-gray-200"
@@ -140,21 +158,17 @@ export default function Nav() {
 
           {/* CTA + Mobile toggle */}
           <div className="flex items-center gap-2">
-            {/* Mobile-only inline search (between brand and menu toggle) */}
-            {/* Constrain the mobile search so it doesn't push/wrap the brand */}
-            {/* make mobile search not-grow so the hamburger stays visible */}
-            <div className="md:hidden flex-none min-w-0 max-w-[140px]">
-              <form onSubmit={handleSearchSubmit} className="flex gap-2">
-                <input
-                  ref={searchInputRef}
-                  value={query}
-                  onChange={(e) => setQuery(e.target.value)}
-                  className="flex-1 min-w-0 border rounded-md px-2 py-1 text-sm text-black"
-                  placeholder="Search services..."
-                  aria-label="Search services"
-                />
-                <button type="submit" className="px-3 py-1 bg-[#08aff1] text-white rounded-md text-sm">Go</button>
-              </form>
+            {/* Mobile inline search removed — overlay search icon below opens the fullscreen search */}
+            {/* mobile overlay search opener (shows full-screen site-style search) */}
+            <div className="md:hidden">
+              <button
+                type="button"
+                aria-label="Open site search"
+                onClick={() => setOverlaySearchOpen(true)}
+                className="inline-flex items-center justify-center p-2 rounded-md text-slate-700 hover:bg-slate-100"
+              >
+                🔍
+              </button>
             </div>
             {/* Desktop search (togglable) */}
             <div className="hidden md:flex items-center" data-search ref={searchRef}>
@@ -164,7 +178,7 @@ export default function Nav() {
                     ref={searchInputRef}
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
-                    className="border rounded-md px-3 py-1 w-64 text-sm text-black"
+                    className="border rounded-md px-3 py-1 w-64 text-sm text-black placeholder:text-slate-400"
                     placeholder="Search services..."
                     aria-label="Search services"
                   />
@@ -253,6 +267,37 @@ export default function Nav() {
         </div>
       </div>
     </nav>
+
+    {/* Overlay search (Apple/Samsung-like) */}
+    {overlaySearchOpen && (
+      <div className="fixed inset-0 z-60 flex items-start sm:items-center justify-center p-4 bg-black/50" role="dialog" aria-modal="true">
+        <div className="w-full max-w-lg mt-8 sm:mt-0">
+          <form onSubmit={handleOverlaySearchSubmit} className="bg-white rounded-xl shadow-lg p-4">
+            <div className="flex items-center gap-3">
+                <input
+                  ref={overlaySearchInputRef}
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  className="flex-1 border-none outline-none px-4 py-3 text-base sm:text-lg text-black placeholder:text-slate-400"
+                  placeholder="Search Bob-Linus — e.g. transport, warehousing..."
+                  aria-label="Site search"
+                />
+              <button type="submit" className="px-4 py-2 bg-[#08aff1] text-white rounded-md">Search</button>
+              <button type="button" onClick={() => setOverlaySearchOpen(false)} aria-label="Close search" className="p-2 text-slate-600">✕</button>
+            </div>
+            <div className="mt-3 text-sm text-slate-700">
+              {/* placeholder suggestions */}
+              <div className="flex flex-wrap gap-2">
+                <button type="button" onClick={() => { setQuery('Transport Services'); }} className="px-3 py-1 bg-slate-100 rounded-md text-sm text-slate-700">Transport</button>
+                <button type="button" onClick={() => { setQuery('Warehousing'); }} className="px-3 py-1 bg-slate-100 rounded-md text-sm text-slate-700">Warehousing</button>
+                <button type="button" onClick={() => { setQuery('Vehicle importation'); }} className="px-3 py-1 bg-slate-100 rounded-md text-sm text-slate-700">Vehicle import</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    )}
+    </>
   );
 }
 // ...existing code...
