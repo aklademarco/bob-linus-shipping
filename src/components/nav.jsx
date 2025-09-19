@@ -82,9 +82,10 @@ export default function Nav() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Brand (not a link) */}
-          <div className="flex items-center gap-3">
+          {/* Make the brand non-shrinking and prevent inner text wrapping on small screens */}
+          <div className="flex items-center gap-3 flex-shrink-0">
             <img src="/images/logo.png" alt="Bob-Linus logo" className="w-12 h-12 object-contain" />
-            <div className="leading-tight">
+            <div className="leading-tight whitespace-nowrap">
               <span className="block font-bold text-slate-950 text-xl md:text-2xl">Bob-Linus</span>
               <small className="block text-xs text-slate-950">Shipping & Logistics</small>
             </div>
@@ -140,13 +141,14 @@ export default function Nav() {
           {/* CTA + Mobile toggle */}
           <div className="flex items-center gap-3">
             {/* Mobile-only inline search (between brand and menu toggle) */}
-            <div className="md:hidden w-56">
+            {/* Constrain the mobile search so it doesn't push/wrap the brand */}
+            <div className="md:hidden flex-1 min-w-0 max-w-[180px]">
               <form onSubmit={handleSearchSubmit} className="flex gap-2">
                 <input
                   ref={searchInputRef}
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
-                  className="flex-1 border rounded-md px-2 py-1 text-sm text-black"
+                  className="flex-1 min-w-0 border rounded-md px-2 py-1 text-sm text-black"
                   placeholder="Search services..."
                   aria-label="Search services"
                 />
@@ -205,7 +207,6 @@ export default function Nav() {
               </svg>
             </button>
 
-            {/* no search icon on mobile; search input shown inline */}
           </div>
         </div>
       </div>
