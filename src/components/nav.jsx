@@ -139,10 +139,11 @@ export default function Nav() {
           </div>
 
           {/* CTA + Mobile toggle */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
             {/* Mobile-only inline search (between brand and menu toggle) */}
             {/* Constrain the mobile search so it doesn't push/wrap the brand */}
-            <div className="md:hidden flex-1 min-w-0 max-w-[180px]">
+            {/* make mobile search not-grow so the hamburger stays visible */}
+            <div className="md:hidden flex-none min-w-0 max-w-[140px]">
               <form onSubmit={handleSearchSubmit} className="flex gap-2">
                 <input
                   ref={searchInputRef}
@@ -196,7 +197,7 @@ export default function Nav() {
               type="button"
               aria-label="Toggle menu"
               onClick={() => setOpen((v) => !v)}
-              className="md:hidden inline-flex items-center justify-center p-2 rounded-md text-slate-700 hover:bg-slate-100"
+              className="md:hidden inline-flex flex-none items-center justify-center p-2 rounded-md text-slate-700 hover:bg-slate-100"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 {open ? (
