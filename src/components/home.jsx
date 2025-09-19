@@ -232,100 +232,320 @@ export default function HomePage() {
       <section className="py-20 bg-white">
         <div className="w-full px-4">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-slate-900 mb-4">Our Services</h2>
-            <p className="text-xl text-slate-600 max-w-3xl mx-auto">
-              Comprehensive logistics solutions tailored to meet your shipping and storage needs
-            </p>
+            <h2 className="text-4xl font-bold text-slate-900 mb-4">
+             Bob-Linus SHIPPING AND LOGISTICS <span className="text-[#08aff1]">SERVICES</span>
+            </h2>
+            <div className="w-16 h-1 bg-[#08aff1] mx-auto mb-8"></div>
+            <div className="max-w-3xl mx-auto text-center space-y-2">
+              <p className="text-lg text-slate-600">
+                Bob-Linus Shipping and Logistics is more than logistics.
+              </p>
+              <p className="text-lg text-slate-600">
+                We can also optimize your packaging, manage your materials sourcing, and so much more.
+              </p>
+            </div>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            {/* Cargo Shipping */}
-            <div className="group bg-gradient-to-br from-slate-50 to-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 border border-slate-100 hover:border-[#08aff1]/20">
-              <div className="w-16 h-16 bg-gradient-to-br from-[#08aff1] to-[#0694d1] rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                <Truck className="w-8 h-8 text-white" />
+          <div className="grid md:grid-cols-3 gap-12 max-w-6xl mx-auto">
+            {/* Air Freight Forwarding */}
+            <div className="text-center group">
+              <div className="w-24 h-24 mx-auto mb-6 flex items-center justify-center">
+                <svg className="w-20 h-20 text-slate-600 group-hover:text-[#08aff1] transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+                </svg>
               </div>
-              <h3 className="text-2xl font-bold text-slate-900 mb-4">Cargo Shipping & Transportation</h3>
-              <p className="text-slate-600 mb-6 leading-relaxed">
-                Reliable cargo shipping services across Ghana and international routes with 
-                real-time tracking and secure handling.
+              <h3 className="text-2xl font-bold text-slate-900 mb-4">Air Freight Forwarding</h3>
+              <p className="text-slate-600 leading-relaxed">
+                As a leader in global air freight forwarding, Global Shipping and Logistics excels in providing 
+                tailored transportation.
               </p>
-              <button className="text-[#08aff1] font-semibold flex items-center gap-2 hover:gap-3 transition-all group-hover:text-[#0694d1]">
-                READ MORE
-                <ChevronRight className="w-4 h-4" />
-              </button>
+            </div>
+
+            {/* Ocean Freight Forwarding */}
+            <div className="text-center group">
+              <div className="w-24 h-24 mx-auto mb-6 flex items-center justify-center">
+                <svg className="w-20 h-20 text-slate-600 group-hover:text-[#08aff1] transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"/>
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 12l-2-2m2 2l2-2m-2 2v6"/>
+                </svg>
+              </div>
+              <h3 className="text-2xl font-bold text-slate-900 mb-4">Ocean Freight Forwarding</h3>
+              <p className="text-slate-600 leading-relaxed">
+                Ocean Freight plays perhaps the most vital role in most transportation and supply chain solutions.
+              </p>
+            </div>
+
+            {/* Road Freight Forwarding */}
+            <div className="text-center group">
+              <div className="w-24 h-24 mx-auto mb-6 flex items-center justify-center">
+                <Truck className="w-20 h-20 text-slate-600 group-hover:text-[#08aff1] transition-colors" />
+              </div>
+              <h3 className="text-2xl font-bold text-slate-900 mb-4">Road Freight Forwarding</h3>
+              <p className="text-slate-600 leading-relaxed">
+                Cargo are transported at some stage of their journey along the world's roads where we give 
+                you a reassuring presence.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Our Special Services Section */}
+      <section className="py-20 bg-slate-900 text-white">
+        <div className="w-full px-4">
+          {/* Header Section - Side by Side */}
+          <div className="grid lg:grid-cols-2 gap-8 items-start mb-16">
+            {/* Left - Title */}
+            <div>
+              <h2 className="text-4xl font-bold mb-6">
+                OUR SPECIAL<br />
+                SERVICES
+              </h2>
+              <div className="w-16 h-1 bg-[#08aff1] mb-6"></div>
+            </div>
+            
+            {/* Right - Description */}
+            <div>
+              <p className="text-lg text-gray-300 leading-relaxed">
+                Our warehousing services are known nationwide to be one of the most reliable, safe 
+                and affordable, because we take pride in delivering the best of warehousing 
+                services, at the most reasonable prices.
+              </p>
+            </div>
+          </div>
+
+          {/* Services Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+            {/* Packaging And Storage */}
+            <div className="border border-slate-700 p-6 rounded-lg hover:border-[#08aff1] transition-all duration-300 group hover:-translate-y-1 hover:shadow-xl animate-fade-up" style={{ animationDelay: '0.1s' }}>
+              <div className="w-12 h-12 mb-4 group-hover:scale-110 transition-transform duration-300">
+                <svg className="w-12 h-12 text-white group-hover:text-[#08aff1] transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M9 21h6"/>
+                </svg>
+              </div>
+              <h3 className="text-xl font-bold mb-3 group-hover:text-[#08aff1] transition-colors duration-300">Packaging And Storage</h3>
+              <p className="text-gray-400 text-sm leading-relaxed">
+                Package and store your things effectively and securely to make sure they are safe.
+              </p>
+            </div>
+
+            {/* Cargo */}
+            <div className="border border-slate-700 p-6 rounded-lg hover:border-[#08aff1] transition-all duration-300 group hover:-translate-y-1 hover:shadow-xl animate-fade-up" style={{ animationDelay: '0.2s' }}>
+              <div className="w-12 h-12 mb-4 group-hover:scale-110 transition-transform duration-300">
+                <svg className="w-12 h-12 text-white group-hover:text-[#08aff1] transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+                </svg>
+              </div>
+              <h3 className="text-xl font-bold mb-3 group-hover:text-[#08aff1] transition-colors duration-300">Cargo</h3>
+              <p className="text-gray-400 text-sm leading-relaxed">
+                Delivery of any freight from a place to another place quickly to save your cost and your time.
+              </p>
+            </div>
+
+            {/* Worldwide Transport - Standard Styling */}
+            <div className="border border-slate-700 p-6 rounded-lg hover:border-[#08aff1] transition-all duration-300 group hover:-translate-y-1 hover:shadow-xl animate-fade-up" style={{ animationDelay: '0.3s' }}>
+              <div className="w-12 h-12 mb-4 group-hover:scale-110 transition-transform duration-300">
+                <svg className="w-12 h-12 text-white group-hover:text-[#08aff1] transition-colors duration-300" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM21 9V7L15 1H5C3.9 1 3 1.9 3 3V19C3 20.1 3.9 21 5 21H11V19H5V3H13V7H17V9H21ZM18 12C16.3 12 15 13.3 15 15S16.3 18 18 18 21 16.7 21 15 19.7 12 18 12ZM18 20C15.8 20 14 18.2 14 16S15.8 12 18 12 22 13.8 22 16 20.2 20 18 20Z"/>
+                </svg>
+              </div>
+              <h3 className="text-xl font-bold mb-3 group-hover:text-[#08aff1] transition-colors duration-300">Worldwide Transport</h3>
+              <p className="text-gray-400 text-sm leading-relaxed">
+                Specialises in international freight forwarding of merchandise and 
+                associated general logistic services.
+              </p>
             </div>
 
             {/* Warehousing */}
-            <div className="group bg-gradient-to-br from-slate-50 to-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 border border-slate-100 hover:border-[#08aff1]/20">
-              <div className="w-16 h-16 bg-gradient-to-br from-[#08aff1] to-[#0694d1] rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                <Warehouse className="w-8 h-8 text-white" />
+            <div className="border border-slate-700 p-6 rounded-lg hover:border-[#08aff1] transition-all duration-300 group hover:-translate-y-1 hover:shadow-xl animate-fade-up" style={{ animationDelay: '0.4s' }}>
+              <div className="w-12 h-12 mb-4 group-hover:scale-110 transition-transform duration-300">
+                <Warehouse className="w-12 h-12 text-white group-hover:text-[#08aff1] transition-colors duration-300" />
               </div>
-              <h3 className="text-2xl font-bold text-slate-900 mb-4">Warehousing & Storage</h3>
-              <p className="text-slate-600 mb-6 leading-relaxed">
-                Secure, climate-controlled storage facilities with inventory management 
-                and flexible storage solutions.
+              <h3 className="text-xl font-bold mb-3 group-hover:text-[#08aff1] transition-colors duration-300">Warehousing</h3>
+              <p className="text-gray-400 text-sm leading-relaxed">
+                Package and store your things effectively and securely to make sure they are safe.
               </p>
-              <button className="text-[#08aff1] font-semibold flex items-center gap-2 hover:gap-3 transition-all group-hover:text-[#0694d1]">
-                READ MORE
-                <ChevronRight className="w-4 h-4" />
-              </button>
             </div>
 
-            {/* Household Items */}
-            <div className="group bg-gradient-to-br from-slate-50 to-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 border border-slate-100 hover:border-[#08aff1]/20">
-              <div className="w-16 h-16 bg-gradient-to-br from-[#08aff1] to-[#0694d1] rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                <Home className="w-8 h-8 text-white" />
+            {/* Door to Door Delivery */}
+            <div className="border border-slate-700 p-6 rounded-lg hover:border-[#08aff1] transition-all duration-300 group hover:-translate-y-1 hover:shadow-xl animate-fade-up" style={{ animationDelay: '0.5s' }}>
+              <div className="w-12 h-12 mb-4 group-hover:scale-110 transition-transform duration-300">
+                <svg className="w-12 h-12 text-white group-hover:text-[#08aff1] transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2v0a2 2 0 012-2h14a2 2 0 012 2v0"/>
+                </svg>
               </div>
-              <h3 className="text-2xl font-bold text-slate-900 mb-4">Importation of Household Items</h3>
-              <p className="text-slate-600 mb-6 leading-relaxed">
-                Specialized handling and importation of household goods with customs 
-                clearance and door-to-door delivery.
+              <h3 className="text-xl font-bold mb-3 group-hover:text-[#08aff1] transition-colors duration-300">Door to Door Delivery</h3>
+              <p className="text-gray-400 text-sm leading-relaxed">
+                Our expertise in transport management and planning allows us to design a 
+                solution.
               </p>
-              <button className="text-[#08aff1] font-semibold flex items-center gap-2 hover:gap-3 transition-all group-hover:text-[#0694d1]">
-                READ MORE
-                <ChevronRight className="w-4 h-4" />
-              </button>
+            </div>
+
+            {/* Ground Transport */}
+            <div className="border border-slate-700 p-6 rounded-lg hover:border-[#08aff1] transition-all duration-300 group hover:-translate-y-1 hover:shadow-xl animate-fade-up" style={{ animationDelay: '0.6s' }}>
+              <div className="w-12 h-12 mb-4 group-hover:scale-110 transition-transform duration-300">
+                <svg className="w-12 h-12 text-white group-hover:text-[#08aff1] transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM21 17a2 2 0 11-4 0 2 2 0 014 0z"/>
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/>
+                </svg>
+              </div>
+              <h3 className="text-xl font-bold mb-3 group-hover:text-[#08aff1] transition-colors duration-300">Ground Transport</h3>
+              <p className="text-gray-400 text-sm leading-relaxed">
+                Ground transportation options for all visitors, no matter your needs, schedule 
+                or destination.
+              </p>
             </div>
           </div>
         </div>
       </section>
 
       {/* Why Choose Us Section */}
-      <section className="py-20 bg-slate-50">
+      <section className="py-20 bg-white">
         <div className="w-full px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-slate-900 mb-4">Why Choose Us?</h2>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="text-center group">
-              <div className="w-20 h-20 bg-gradient-to-br from-[#08aff1] to-[#0694d1] rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg">
-                <Clock className="w-10 h-10 text-white" />
+          <div className="grid lg:grid-cols-2 gap-16 items-start">
+            {/* Left Side - Why Choose Us */}
+            <div>
+              <div className="mb-12">
+                <h2 className="text-4xl font-bold text-slate-900 mb-4">WHY CHOOSE US?</h2>
+                <div className="w-16 h-1 bg-[#08aff1] mb-8"></div>
               </div>
-              <h3 className="text-2xl font-bold text-slate-900 mb-4">Reliable & Timely Deliveries</h3>
-              <p className="text-slate-600 leading-relaxed">
-                We prioritize punctuality and consistency to keep your shipments on schedule.
-              </p>
+
+              <div className="space-y-8 relative">
+                {/* Connecting line */}
+                <div className="absolute left-8 top-16 bottom-0 w-0.5 bg-gray-200 z-0"></div>
+
+                {/* Global Supply Chain Solutions */}
+                <div className="flex gap-6 relative z-10 animate-slide-up" style={{ animationDelay: '0.1s' }}>
+                  <div className="w-16 h-16 bg-blue-100 hover:bg-[#08aff1] rounded-full flex items-center justify-center flex-shrink-0 transition-all duration-300 group hover:scale-110 hover:shadow-lg">
+                    <Truck className="w-8 h-8 text-blue-600 group-hover:text-white transition-all duration-300 group-hover:rotate-3" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-slate-900 mb-3">Global Supply Chain Solutions</h3>
+                    <p className="text-slate-600 leading-relaxed">
+                      Efficiently unleash cross-media information without cross-media value.
+                    </p>
+                  </div>
+                </div>
+
+                {/* 24 Hours Technical Support */}
+                <div className="flex gap-6 relative z-10 animate-slide-up" style={{ animationDelay: '0.2s' }}>
+                  <div className="w-16 h-16 bg-blue-100 hover:bg-[#08aff1] rounded-full flex items-center justify-center flex-shrink-0 transition-all duration-300 group hover:scale-110 hover:shadow-lg">
+                    <Users className="w-8 h-8 text-blue-600 group-hover:text-white transition-all duration-300 group-hover:rotate-3" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-slate-900 mb-3">24 Hours - Technical Support</h3>
+                    <p className="text-slate-600 leading-relaxed">
+                      Specialises in international freight forwarding of merchandise and associated logistic services.
+                    </p>
+                  </div>
+                </div>
+
+                {/* Mobile Shipment Tracking */}
+                <div className="flex gap-6 relative z-10 animate-slide-up" style={{ animationDelay: '0.3s' }}>
+                  <div className="w-16 h-16 bg-blue-100 hover:bg-[#08aff1] rounded-full flex items-center justify-center flex-shrink-0 transition-all duration-300 group hover:scale-110 hover:shadow-lg">
+                    <svg className="w-8 h-8 text-blue-600 group-hover:text-white transition-all duration-300 group-hover:rotate-3" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM21 9V7L15 1H5C3.9 1 3 1.9 3 3V19C3 20.1 3.9 21 5 21H11V19H5V3H13V7H17V9H21ZM18 12C16.3 12 15 13.3 15 15S16.3 18 18 18 21 16.7 21 15 19.7 12 18 12ZM18 20C15.8 20 14 18.2 14 16S15.8 12 18 12 22 13.8 22 16 20.2 20 18 20Z"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-slate-900 mb-3">Mobile Shipment Tracking</h3>
+                    <p className="text-slate-600 leading-relaxed">
+                      We Offers intelligent concepts for road and rail and well as complex special transport services.
+                    </p>
+                  </div>
+                </div>
+
+                {/* Careful Handling */}
+                <div className="flex gap-6 relative z-10 animate-slide-up" style={{ animationDelay: '0.4s' }}>
+                  <div className="w-16 h-16 bg-blue-100 hover:bg-[#08aff1] rounded-full flex items-center justify-center flex-shrink-0 transition-all duration-300 group hover:scale-110 hover:shadow-lg">
+                    <Shield className="w-8 h-8 text-blue-600 group-hover:text-white transition-all duration-300 group-hover:rotate-3" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-slate-900 mb-3">Careful Handling of Valuable Goods</h3>
+                    <p className="text-slate-600 leading-relaxed">
+                      Cargo HUB are transported at some stage of their journey along the world's roads.
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
 
-            <div className="text-center group">
-              <div className="w-20 h-20 bg-gradient-to-br from-[#08aff1] to-[#0694d1] rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg">
-                <Users className="w-10 h-10 text-white" />
+            {/* Right Side - Contact Form */}
+            <div className="bg-slate-50 p-8 rounded-lg">
+              <div className="mb-8">
+                <h2 className="text-2xl font-bold text-slate-900 mb-4">REQUEST A QUOTE</h2>
+                <div className="w-16 h-1 bg-[#08aff1]"></div>
               </div>
-              <h3 className="text-2xl font-bold text-slate-900 mb-4">Customer-Centric Approach</h3>
-              <p className="text-slate-600 leading-relaxed">
-                Our dedicated team works closely with clients to understand and meet their unique needs.
-              </p>
-            </div>
 
-            <div className="text-center group">
-              <div className="w-20 h-20 bg-gradient-to-br from-[#08aff1] to-[#0694d1] rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg">
-                <Shield className="w-10 h-10 text-white" />
-              </div>
-              <h3 className="text-2xl font-bold text-slate-900 mb-4">Professional & Secure Handling</h3>
-              <p className="text-slate-600 leading-relaxed">
-                Your cargo is handled with the utmost care and security throughout the entire process.
-              </p>
+              <form className="space-y-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="sr-only" htmlFor="contact-fullname">Full Name</label>
+                    <input
+                      id="contact-fullname"
+                      name="fullname"
+                      type="text"
+                      placeholder="Full Name *"
+                      required
+                      className="w-full px-4 py-3 border border-gray-300 rounded-md text-slate-900 placeholder-slate-500 focus:border-[#08aff1] focus:outline-none focus:ring-1 focus:ring-[#08aff1]"
+                    />
+                  </div>
+                  <div>
+                    <label className="sr-only" htmlFor="contact-email-addr">Email Address</label>
+                    <input
+                      id="contact-email-addr"
+                      name="email"
+                      type="email"
+                      placeholder="Email Address *"
+                      required
+                      className="w-full px-4 py-3 border border-gray-300 rounded-md text-slate-900 placeholder-slate-500 focus:border-[#08aff1] focus:outline-none focus:ring-1 focus:ring-[#08aff1]"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="sr-only" htmlFor="contact-subject">Subject</label>
+                    <input
+                      id="contact-subject"
+                      name="subject"
+                      type="text"
+                      placeholder="Subject *"
+                      required
+                      className="w-full px-4 py-3 border border-gray-300 rounded-md text-slate-900 placeholder-slate-500 focus:border-[#08aff1] focus:outline-none focus:ring-1 focus:ring-[#08aff1]"
+                    />
+                  </div>
+                  <div>
+                    <label className="sr-only" htmlFor="contact-phone">Phone Number</label>
+                    <input
+                      id="contact-phone"
+                      name="phone"
+                      type="tel"
+                      placeholder="Phone Number"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-md text-slate-900 placeholder-slate-500 focus:border-[#08aff1] focus:outline-none focus:ring-1 focus:ring-[#08aff1]"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="sr-only" htmlFor="contact-message-text">Message</label>
+                  <textarea
+                    id="contact-message-text"
+                    name="message"
+                    placeholder="Message *"
+                    rows="5"
+                    required
+                    className="w-full px-4 py-3 border border-gray-300 rounded-md text-slate-900 placeholder-slate-500 focus:border-[#08aff1] focus:outline-none focus:ring-1 focus:ring-[#08aff1] resize-none"
+                  ></textarea>
+                </div>
+
+                <button
+                  type="submit"
+                  className="bg-[#08aff1] text-white px-8 py-3 rounded-md font-semibold hover:bg-[#0694d1] transition-colors focus:outline-none focus:ring-2 focus:ring-[#08aff1] focus:ring-offset-2"
+                >
+                  Send Message
+                </button>
+              </form>
             </div>
           </div>
         </div>
