@@ -217,7 +217,7 @@ export default function Nav() {
                 onClick={() => setOverlaySearchOpen(true)}
                 className="inline-flex items-center justify-center p-2 rounded-md text-slate-700 hover:bg-slate-100"
               >
-                <Search className="w-5 h-5" />
+                <Search className="w-5 h-5" color="#334155" />
               </button>
             </div>
             {/* Desktop search (togglable) */}
@@ -241,10 +241,10 @@ export default function Nav() {
                 <button
                   type="button"
                   onClick={(e) => { e.stopPropagation(); setSearchOpen(true); }}
-                  className="p-2 rounded-md hover:bg-slate-100"
+                  className="p-2 rounded-md hover:bg-slate-400"
                   aria-label="Open search"
                 >
-                  <Search className="w-5 h-5" />
+                  <Search className="w-5 h-5 text-[#060707]"  />
                 </button>
               )}
             </div>
