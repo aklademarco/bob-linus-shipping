@@ -1,14 +1,68 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { ChevronRight, Truck, Warehouse, Home, Shield, Clock, Users, Award, Phone, Mail, Facebook, Twitter, Linkedin, Instagram, Youtube } from 'lucide-react';
+import { ChevronRight, ChevronLeft, Truck, Warehouse, Home, Shield, Clock, Users, Award, Phone, Mail, Facebook, Twitter, Linkedin, Instagram, Youtube } from 'lucide-react';
 
 export default function HomePage() {
   const [quoteOpen, setQuoteOpen] = useState(false);
   const [quoteName, setQuoteName] = useState('');
   const [quoteEmail, setQuoteEmail] = useState('');
   const [quoteDetails, setQuoteDetails] = useState('');
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const quoteFirstRef = useRef(null);
   const quoteLastRef = useRef(null);
   const ctaRef = useRef(null);
+
+  const heroSlides = [
+    {
+      id: 1,
+      image: "/images/home4.png",
+      title: "Cargo Shipping & Transportation",
+      subtitle: "Global Reach, Local Trust",
+      description: "Reliable cargo shipping services across Ghana and international routes with real-time tracking and secure handling.",
+      highlight: "shipping",
+      icon: <Truck className="w-6 h-6" />
+    },
+    {
+      id: 2,
+      image: "/images/warehouse.jpg", 
+      title: "Warehousing & Storage",
+      subtitle: "Secure Storage Solutions",
+      description: "State-of-the-art warehousing facilities with climate control, inventory management, and flexible storage options.",
+      highlight: "warehousing",
+      icon: <Warehouse className="w-6 h-6" />
+    },
+    {
+      id: 3,
+      image: "/images/home11.jpg",
+      title: "Household Imports",
+      subtitle: "Door-to-Door Service",
+      description: "Specialized handling and importation of household goods with customs clearance and seamless delivery.",
+      highlight: "imports", 
+      icon: <Home className="w-6 h-6" />
+    }
+  ];
+
+  // Auto-rotate slides
+  useEffect(() => {
+    if (!isAutoPlaying) return;
+    
+    const interval = setInterval(() => {
+      setCurrentSlide(prev => (prev + 1) % heroSlides.length);
+    }, 5000); // Change every 5 seconds
+    
+    return () => clearInterval(interval);
+  }, [isAutoPlaying, heroSlides.length]);
+
+  // Pause auto-play on hover
+  const handleMouseEnter = () => setIsAutoPlaying(false);
+  const handleMouseLeave = () => setIsAutoPlaying(true);
+
+  const goToSlide = (index) => {
+    setCurrentSlide(index);
+    setIsAutoPlaying(false); // Pause auto-play when manually navigating
+    // Resume auto-play after 10 seconds
+    setTimeout(() => setIsAutoPlaying(true), 10000);
+  };
 
   function openQuote() {
     setQuoteOpen(true);
@@ -62,43 +116,115 @@ export default function HomePage() {
 
   return (
     <div id="main" className="min-h-screen">
-      {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-blue-50 to-slate-100 pt-20 pb-16">
-        <div className="w-full">
-          <div className="grid lg:grid-cols-2 gap-8 items-center">
-            <div className="space-y-8 px-4">
-              <div className="space-y-6">
-                <h1 className="text-5xl lg:text-6xl font-bold text-slate-900 leading-tight">
-                  Your Trusted
-                  <span className="text-[#08aff1] block">Shipping Partner</span>
-                </h1>
-                <p className="text-xl text-slate-600 leading-relaxed">
-                  With over 20 years of experience, Bob-Linus delivers reliable cargo shipping,
-                  warehousing, and logistics solutions across Ghana and beyond.
-                </p>
-                <p className="text-sm text-slate-500">Free quotes • Typical response within 24 hours</p>
+      {/* Hero Carousel Section - Full Width Background */}
+      <section 
+        className="relative min-h-[100vh] sm:min-h-[100vh] overflow-hidden"
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      >
+        {/* Background Images Carousel */}
+        {heroSlides.map((slide, index) => (
+          <div
+            key={slide.id}
+            className={`absolute inset-0 transition-all duration-1000 ease-in-out ${
+              index === currentSlide 
+                ? 'opacity-100 z-10' 
+                : 'opacity-0 z-0'
+            }`}
+          >
+            <img 
+              src={slide.image} 
+              alt={slide.title}
+              width="1920" height="1080"
+              loading={index === 0 ? "eager" : "lazy"}
+              className={`w-full h-full object-cover transition-transform duration-[6000ms] ease-out ${
+                index === currentSlide ? 'animate-zoom-in' : ''
+              }`}
+            />
+            {/* Enhanced overlay for better text readability */}
+            <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/50 to-black/70" />
+            <div className="absolute inset-0 bg-black/20" />
+          </div>
+        ))}
+
+        {/* Content Overlay */}
+        <div className="relative z-20 flex items-center justify-center min-h-[100vh] px-4 py-20">
+          <div className="container mx-auto text-center text-white">
+            <div className="max-w-5xl mx-auto space-y-6 md:space-y-8">
+              {/* Service indicator */}
+              <div className="flex items-center justify-center gap-2 text-[#08aff1] font-medium">
+                {heroSlides[currentSlide].icon}
+                <span className="text-xs sm:text-sm uppercase tracking-wider">{heroSlides[currentSlide].highlight}</span>
               </div>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <button ref={ctaRef} onClick={openQuote} className="bg-[#08aff1] text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-[#0694d1] transition-all duration-200 transform hover:-translate-y-0.5 hover:shadow-xl flex items-center gap-2 justify-center focus:outline-none focus:ring-4 focus:ring-[#08aff1]/30 focus:ring-offset-2 w-full sm:w-auto md:inline-flex">
+              
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold leading-tight hero-text-shadow">
+                <span className="block text-white">{heroSlides[currentSlide].subtitle}</span>
+                <span className="text-[#08aff1] block">{heroSlides[currentSlide].title}</span>
+              </h1>
+              
+              <p className="text-lg sm:text-xl md:text-2xl text-gray-100 leading-relaxed max-w-4xl mx-auto hero-subtitle-shadow">
+                {heroSlides[currentSlide].description}
+              </p>
+              <p className="text-sm text-gray-200 hero-subtitle-shadow">Free quotes • Typical response within 24 hours</p>
+
+              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4 md:pt-8">
+                <button 
+                  ref={ctaRef} 
+                  onClick={openQuote} 
+                  className="bg-[#08aff1] text-white px-8 sm:px-10 py-3 sm:py-4 rounded-lg text-base sm:text-lg font-semibold hover:bg-[#0694d1] transition-all duration-200 transform hover:-translate-y-0.5 hover:shadow-2xl flex items-center gap-2 justify-center focus:outline-none focus:ring-4 focus:ring-[#08aff1]/30 focus:ring-offset-2 w-full sm:w-auto sm:min-w-[200px] shadow-lg"
+                >
                   Get Quote Now
-                  <ChevronRight className="w-5 h-5" />
+                  <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
                 </button>
-                <button className="border-2 border-slate-300 text-slate-700 px-8 py-4 rounded-lg text-lg font-semibold hover:border-[#08aff1] hover:text-[#08aff1] transition-all duration-200 hover:shadow-md focus:outline-none focus:ring-4 focus:ring-slate-300/30 focus:ring-offset-2">
+                <button className="border-2 border-white text-white px-8 sm:px-10 py-3 sm:py-4 rounded-lg text-base sm:text-lg font-semibold hover:bg-white hover:text-gray-900 transition-all duration-200 hover:shadow-2xl focus:outline-none focus:ring-4 focus:ring-white/30 focus:ring-offset-2 w-full sm:w-auto sm:min-w-[200px] shadow-lg backdrop-blur-sm">
                   Our Services
                 </button>
               </div>
             </div>
-            <div className="relative">
-              <img 
-                src="/images/home1.png" 
-                alt="Bob-Linus Shipping Operations" 
-                width="1100" height="700"
-                loading="lazy"
-                className="w-full h-auto rounded-2xl shadow-2xl"
-              />
-              <div aria-hidden className="absolute inset-0 rounded-2xl bg-gradient-to-b from-transparent to-black/20 pointer-events-none" />
-            </div>
           </div>
+        </div>
+
+        {/* Navigation Arrows */}
+        <button
+          onClick={() => goToSlide((currentSlide - 1 + heroSlides.length) % heroSlides.length)}
+          className="absolute left-2 sm:left-4 lg:left-6 top-1/2 transform -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white transition-all duration-200 z-30 group"
+          aria-label="Previous slide"
+        >
+          <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7 rotate-180 group-hover:scale-110 transition-transform" />
+        </button>
+        
+        <button
+          onClick={() => goToSlide((currentSlide + 1) % heroSlides.length)}
+          className="absolute right-2 sm:right-4 lg:right-6 top-1/2 transform -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white transition-all duration-200 z-30 group"
+          aria-label="Next slide"
+        >
+          <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7 group-hover:scale-110 transition-transform" />
+        </button>
+
+        {/* Navigation Dots */}
+        <div className="absolute bottom-6 sm:bottom-8 left-1/2 transform -translate-x-1/2 flex gap-3 sm:gap-4 z-30">
+          {heroSlides.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => goToSlide(index)}
+              className={`w-3 h-3 sm:w-4 sm:h-4 rounded-full transition-all duration-300 ${
+                index === currentSlide 
+                  ? 'bg-[#08aff1] scale-125 shadow-lg' 
+                  : 'bg-white/40 hover:bg-white/70'
+              }`}
+              aria-label={`Go to slide ${index + 1}`}
+            />
+          ))}
+        </div>
+
+        {/* Progress Bar */}
+        <div className="absolute bottom-0 left-0 right-0 h-1 bg-white/20 overflow-hidden z-30">
+          <div 
+            className="h-full bg-[#08aff1] transition-all duration-300 ease-out"
+            style={{ 
+              width: `${((currentSlide + 1) / heroSlides.length) * 100}%` 
+            }}
+          />
         </div>
       </section>
 
