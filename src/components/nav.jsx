@@ -225,7 +225,7 @@ export default function Nav() {
 
           {/* CTA + Mobile toggle */}
           <div className="flex items-center gap-2">
-            {/* mobile overlay search opener (shows full-screen site-style search) */}
+            {/* mobile overlay search opener) */}
             <div className="md:hidden">
               <button
                 type="button"
@@ -311,7 +311,7 @@ export default function Nav() {
 
           <div id="services-menu-mobile" className={`overflow-hidden transition-[max-height] duration-200 ${servicesOpen ? 'max-h-60' : 'max-h-0'}`}>
             <div className="pl-4 space-y-1">
-              {/* paste your mobile service links here */}
+              
               <a href="#transport" onClick={() => { setOpen(false); setServicesOpen(false); setServicesPersist(false); }} className="block text-sm text-slate-700 py-1">Transport Services</a>
               <a href="#trans-shipment" onClick={() => { setOpen(false); setServicesOpen(false); setServicesPersist(false); }} className="block text-sm text-slate-700 py-1">Trans-Shipment</a>
               <a href="#warehousing" onClick={() => { setOpen(false); setServicesOpen(false); setServicesPersist(false); }} className="block text-sm text-slate-700 py-1">Warehousing Services</a>
@@ -371,7 +371,7 @@ export default function Nav() {
       </div>
     </nav>
 
-    {/* Overlay search (Apple/Samsung-like) */}
+    {/* Overlay search */}
     {overlaySearchOpen && (
       <div onPointerDown={() => setOverlaySearchOpen(false)} className="fixed inset-0 z-60 flex items-start sm:items-center justify-center p-4 bg-black/50" role="dialog" aria-modal="true">
         <div className="w-full max-w-lg mt-8 sm:mt-0">
