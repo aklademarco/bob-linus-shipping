@@ -14,6 +14,7 @@ export default function Nav() {
   const overlaySearchInputRef = useRef(null);
   const [overlaySearchOpen, setOverlaySearchOpen] = useState(false);
   const [trackingOpen, setTrackingOpen] = useState(false);
+  const [trackingPersist, setTrackingPersist] = useState(false); // keep tracking open after click
   const [trackingId, setTrackingId] = useState('');
   const trackingRef = useRef(null);
 
@@ -41,6 +42,7 @@ export default function Nav() {
       setServicesPersist(false);
       setSearchOpen(false);
       setTrackingOpen(false);
+      setTrackingPersist(false);
     }
     document.addEventListener('pointerdown', onDoc);
     return () => document.removeEventListener('pointerdown', onDoc);
@@ -85,6 +87,7 @@ export default function Nav() {
         setOpen(false);
         setOverlaySearchOpen(false);
         setTrackingOpen(false);
+        setTrackingPersist(false);
       }
     }
     if (servicesOpen || searchOpen || open) window.addEventListener('keydown', onKey);
@@ -95,6 +98,14 @@ export default function Nav() {
     setServicesOpen((s) => {
       const next = !s;
       setServicesPersist(next); // if opened by click, persist until outside click or click again
+      return next;
+    });
+  }
+
+  function handleTrackingClick() {
+    setTrackingOpen((s) => {
+      const next = !s;
+      setTrackingPersist(next); // if opened by click, persist until outside click or click again
       return next;
     });
   }
@@ -174,14 +185,19 @@ export default function Nav() {
             <a href="#contact" onClick={() => trackNavClick('Contact', '#contact')} className="flex items-center gap-2 text-sm text-slate-950 hover:text-[#08aff1]"><Phone className="w-4 h-4 text-slate-700"/>Contact</a>
 
             {/* Desktop tracking dropdown*/}
-            <div className="relative" data-tracking>
+            <div 
+              className="relative" 
+              data-tracking
+              onMouseEnter={() => { if (!trackingPersist) setTrackingOpen(true); }}
+              onMouseLeave={() => { if (!trackingPersist) setTrackingOpen(false); }}
+            >
               <button
                 type="button"
                 aria-expanded={trackingOpen}
                 aria-controls="tracking-menu-desktop"
                 onPointerDown={(e) => e.stopPropagation()}
                 onMouseDown={(e) => e.stopPropagation()}
-                onClick={(e) => { e.stopPropagation(); setTrackingOpen((s) => !s); }}
+                onClick={(e) => { e.stopPropagation(); handleTrackingClick(); }}
                 className="flex items-center gap-2 text-sm text-slate-950 hover:text-[#08aff1]"
               >
                 <Package className="w-4 h-4 text-slate-700" />
