@@ -12,11 +12,15 @@ export default function HomePage() {
   const [clientsCount, setClientsCount] = useState(0);
   const [hasAnimated, setHasAnimated] = useState(false);
   const [servicesAnimated, setServicesAnimated] = useState(false);
+  const [specialServicesAnimated, setSpecialServicesAnimated] = useState(false);
+  const [contactAnimated, setContactAnimated] = useState(false);
   const quoteFirstRef = useRef(null);
   const quoteLastRef = useRef(null);
   const ctaRef = useRef(null);
   const experienceSectionRef = useRef(null);
   const servicesSectionRef = useRef(null);
+  const specialServicesSectionRef = useRef(null);
+  const contactSectionRef = useRef(null);
 
   const heroSlides = [
     {
@@ -199,6 +203,62 @@ export default function HomePage() {
       }
     };
   }, [servicesAnimated]);
+
+  // Special Services section animation with intersection observer
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !specialServicesAnimated) {
+            setSpecialServicesAnimated(true);
+          }
+        });
+      },
+      {
+        threshold: 0.2,
+        rootMargin: '0px 0px -50px 0px'
+      }
+    );
+
+    const currentElement = specialServicesSectionRef.current;
+    if (currentElement) {
+      observer.observe(currentElement);
+    }
+
+    return () => {
+      if (currentElement) {
+        observer.unobserve(currentElement);
+      }
+    };
+  }, [specialServicesAnimated]);
+
+  // Contact section animation with intersection observer
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !contactAnimated) {
+            setContactAnimated(true);
+          }
+        });
+      },
+      {
+        threshold: 0.15,
+        rootMargin: '0px 0px -50px 0px'
+      }
+    );
+
+    const currentElement = contactSectionRef.current;
+    if (currentElement) {
+      observer.observe(currentElement);
+    }
+
+    return () => {
+      if (currentElement) {
+        observer.unobserve(currentElement);
+      }
+    };
+  }, [contactAnimated]);
 
   return (
     <div id="main" className="min-h-screen">
@@ -403,21 +463,21 @@ export default function HomePage() {
       </section>
 
       {/* Our Special Services Section */}
-      <section className="py-20 bg-slate-900 text-white">
+      <section ref={specialServicesSectionRef} className="py-20 bg-slate-900 text-white">
         <div className="w-full px-4">
           {/* Header Section - Side by Side */}
           <div className="grid lg:grid-cols-2 gap-8 items-start mb-16">
             {/* Left - Title */}
-            <div className="animate-slide-in-left" style={{ animationDelay: '0.1s' }}>
+            <div className={`transition-all duration-800 ${specialServicesAnimated ? 'animate-slide-in-left' : 'opacity-0 -translate-x-12'}`}>
               <h2 className="text-4xl font-bold mb-6">
                 OUR SPECIAL<br />
                 SERVICES
               </h2>
-              <div className="w-16 h-1 bg-[#08aff1] mb-6"></div>
+              <div className={`w-16 h-1 bg-[#08aff1] mb-6 transition-all duration-600 delay-200 ${specialServicesAnimated ? 'opacity-100 scale-x-100' : 'opacity-0 scale-x-0'}`}></div>
             </div>
             
             {/* Right - Description */}
-            <div className="animate-slide-in-right" style={{ animationDelay: '0.2s' }}>
+            <div className={`transition-all duration-800 delay-300 ${specialServicesAnimated ? 'animate-slide-in-right' : 'opacity-0 translate-x-12'}`}>
               <p className="text-lg text-gray-300 leading-relaxed">
                 Our warehousing services are known nationwide to be one of the most reliable, safe 
                 and affordable, because we take pride in delivering the best of warehousing 
@@ -429,7 +489,7 @@ export default function HomePage() {
           {/* Services Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
             {/* Packaging And Storage */}
-            <div className="border border-slate-700 p-6 rounded-lg hover:border-[#08aff1] transition-all duration-300 group hover:-translate-y-1 hover:shadow-xl animate-fade-up" style={{ animationDelay: '0.1s' }}>
+            <div className={`border border-slate-700 p-6 rounded-lg hover:border-[#08aff1] transition-all duration-300 group hover:-translate-y-1 hover:shadow-xl ${specialServicesAnimated ? 'animate-fade-up' : 'opacity-0 translate-y-12'}`} style={{ transitionDelay: specialServicesAnimated ? '0.1s' : '0ms' }}>
               <div className="w-12 h-12 mb-4 group-hover:scale-110 transition-transform duration-300">
                 <Box className="w-12 h-12 text-white group-hover:text-[#08aff1] transition-colors duration-300" />
               </div>
@@ -440,7 +500,7 @@ export default function HomePage() {
             </div>
 
             {/* Cargo */}
-            <div className="border border-slate-700 p-6 rounded-lg hover:border-[#08aff1] transition-all duration-300 group hover:-translate-y-1 hover:shadow-xl animate-fade-up" style={{ animationDelay: '0.2s' }}>
+            <div className={`border border-slate-700 p-6 rounded-lg hover:border-[#08aff1] transition-all duration-300 group hover:-translate-y-1 hover:shadow-xl ${specialServicesAnimated ? 'animate-fade-up' : 'opacity-0 translate-y-12'}`} style={{ transitionDelay: specialServicesAnimated ? '0.2s' : '0ms' }}>
               <div className="w-12 h-12 mb-4 group-hover:scale-110 transition-transform duration-300">
                 <Package className="w-12 h-12 text-white group-hover:text-[#08aff1] transition-colors duration-300" />
               </div>
@@ -450,8 +510,8 @@ export default function HomePage() {
               </p>
             </div>
 
-            {/* Worldwide Transport - Standard Styling */}
-            <div className="border border-slate-700 p-6 rounded-lg hover:border-[#08aff1] transition-all duration-300 group hover:-translate-y-1 hover:shadow-xl animate-fade-up" style={{ animationDelay: '0.3s' }}>
+            {/* Worldwide Transport */}
+            <div className={`border border-slate-700 p-6 rounded-lg hover:border-[#08aff1] transition-all duration-300 group hover:-translate-y-1 hover:shadow-xl ${specialServicesAnimated ? 'animate-fade-up' : 'opacity-0 translate-y-12'}`} style={{ transitionDelay: specialServicesAnimated ? '0.3s' : '0ms' }}>
               <div className="w-12 h-12 mb-4 group-hover:scale-110 transition-transform duration-300">
                 <Globe className="w-12 h-12 text-white group-hover:text-[#08aff1] transition-colors duration-300" />
               </div>
@@ -463,7 +523,7 @@ export default function HomePage() {
             </div>
 
             {/* Warehousing */}
-            <div className="border border-slate-700 p-6 rounded-lg hover:border-[#08aff1] transition-all duration-300 group hover:-translate-y-1 hover:shadow-xl animate-fade-up" style={{ animationDelay: '0.4s' }}>
+            <div className={`border border-slate-700 p-6 rounded-lg hover:border-[#08aff1] transition-all duration-300 group hover:-translate-y-1 hover:shadow-xl ${specialServicesAnimated ? 'animate-fade-up' : 'opacity-0 translate-y-12'}`} style={{ transitionDelay: specialServicesAnimated ? '0.4s' : '0ms' }}>
               <div className="w-12 h-12 mb-4 group-hover:scale-110 transition-transform duration-300">
                 <Warehouse className="w-12 h-12 text-white group-hover:text-[#08aff1] transition-colors duration-300" />
               </div>
@@ -474,7 +534,7 @@ export default function HomePage() {
             </div>
 
             {/* Door to Door Delivery */}
-            <div className="border border-slate-700 p-6 rounded-lg hover:border-[#08aff1] transition-all duration-300 group hover:-translate-y-1 hover:shadow-xl animate-fade-up" style={{ animationDelay: '0.5s' }}>
+            <div className={`border border-slate-700 p-6 rounded-lg hover:border-[#08aff1] transition-all duration-300 group hover:-translate-y-1 hover:shadow-xl ${specialServicesAnimated ? 'animate-fade-up' : 'opacity-0 translate-y-12'}`} style={{ transitionDelay: specialServicesAnimated ? '0.5s' : '0ms' }}>
               <div className="w-12 h-12 mb-4 group-hover:scale-110 transition-transform duration-300">
                 <DoorOpen className="w-12 h-12 text-white group-hover:text-[#08aff1] transition-colors duration-300" />
               </div>
@@ -486,7 +546,7 @@ export default function HomePage() {
             </div>
 
             {/* Ground Transport */}
-            <div className="border border-slate-700 p-6 rounded-lg hover:border-[#08aff1] transition-all duration-300 group hover:-translate-y-1 hover:shadow-xl animate-fade-up" style={{ animationDelay: '0.6s' }}>
+            <div className={`border border-slate-700 p-6 rounded-lg hover:border-[#08aff1] transition-all duration-300 group hover:-translate-y-1 hover:shadow-xl ${specialServicesAnimated ? 'animate-fade-up' : 'opacity-0 translate-y-12'}`} style={{ transitionDelay: specialServicesAnimated ? '0.6s' : '0ms' }}>
               <div className="w-12 h-12 mb-4 group-hover:scale-110 transition-transform duration-300">
                 <Truck className="w-12 h-12 text-white group-hover:text-[#08aff1] transition-colors duration-300" />
               </div>
@@ -713,17 +773,17 @@ export default function HomePage() {
       </section>
 
       {/* Contact Section */}
-      <section className="py-20 bg-white">
+      <section ref={contactSectionRef} className="py-20 bg-white">
         <div className="w-full px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-slate-900 mb-4">Get In Touch</h2>
-            <div className="w-16 h-1 bg-[#08aff1] mx-auto mb-8"></div>
-            <p className="text-xl text-slate-600">Ready to ship? Contact us today for a quote</p>
+          <div className={`text-center mb-16 transition-all duration-800 ${contactAnimated ? 'animate-fade-up' : 'opacity-0 translate-y-8'}`}>
+            <h2 className={`text-4xl font-bold text-slate-900 mb-4 transition-all duration-800 delay-200 ${contactAnimated ? 'animate-slide-down' : 'opacity-0 -translate-y-8'}`}>Get In Touch</h2>
+            <div className={`w-16 h-1 bg-[#08aff1] mx-auto mb-8 transition-all duration-600 delay-400 ${contactAnimated ? 'opacity-100 scale-x-100' : 'opacity-0 scale-x-0'}`}></div>
+            <p className={`text-xl text-slate-600 transition-all duration-800 delay-600 ${contactAnimated ? 'animate-slide-up' : 'opacity-0 translate-y-8'}`}>Ready to ship? Contact us today for a quote</p>
           </div>
 
           {/* Contact Information - Horizontal Layout */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-            <div className="text-center animate-fade-up" style={{ animationDelay: '0.1s' }}>
+            <div className={`text-center transition-all duration-800 delay-100 ${contactAnimated ? 'animate-fade-up' : 'opacity-0 translate-y-12'}`}>
               <div className="w-16 h-16 bg-[#08aff1] rounded-full flex items-center justify-center mx-auto mb-4 transform transition-all duration-300 hover:scale-110 hover:shadow-lg">
                 <Phone className="w-8 h-8 text-white" />
               </div>
@@ -732,7 +792,7 @@ export default function HomePage() {
               <p className="text-sm text-slate-500 mt-1">Mon — Sat: 9AM — 4PM (GMT)</p>
             </div>
 
-            <div className="text-center animate-fade-up" style={{ animationDelay: '0.2s' }}>
+            <div className={`text-center transition-all duration-800 delay-300 ${contactAnimated ? 'animate-fade-up' : 'opacity-0 translate-y-12'}`}>
               <div className="w-16 h-16 bg-[#08aff1] rounded-full flex items-center justify-center mx-auto mb-4 transform transition-all duration-300 hover:scale-110 hover:shadow-lg">
                 <Mail className="w-8 h-8 text-white" />
               </div>
@@ -741,7 +801,7 @@ export default function HomePage() {
               <p className="text-sm text-slate-500 mt-1">We typically respond within 24 hours</p>
             </div>
 
-            <div className="text-center animate-fade-up" style={{ animationDelay: '0.3s' }}>
+            <div className={`text-center transition-all duration-800 delay-500 ${contactAnimated ? 'animate-fade-up' : 'opacity-0 translate-y-12'}`}>
               <div className="w-16 h-16 bg-[#08aff1] rounded-full flex items-center justify-center mx-auto mb-4 transform transition-all duration-300 hover:scale-110 hover:shadow-lg">
                 <Navigation className="w-8 h-8 text-white" />
               </div>
@@ -755,7 +815,7 @@ export default function HomePage() {
           {/* Form and Map Side by Side */}
           <div className="grid lg:grid-cols-2 gap-12 items-start">
             {/* Contact Form */}
-            <div className="bg-slate-50 p-8 rounded-2xl">
+            <div className={`bg-slate-50 p-8 rounded-2xl transition-all duration-800 delay-700 ${contactAnimated ? 'animate-slide-in-left' : 'opacity-0 -translate-x-12'}`}>
               <h3 className="text-2xl font-bold text-slate-900 mb-6">Send Message</h3>
               <form className="space-y-6">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -829,7 +889,7 @@ export default function HomePage() {
             </div>
 
             {/* Map Section */}
-            <div className="bg-slate-100 rounded-2xl overflow-hidden shadow-lg">
+            <div className={`bg-slate-100 rounded-2xl overflow-hidden shadow-lg transition-all duration-800 delay-900 ${contactAnimated ? 'animate-slide-in-right' : 'opacity-0 translate-x-12'}`}>
               <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3970.8674777896916!2d-0.3198147842602!3d5.5911726953124!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xfdfa363c4d71f7d%3A0xccb7b3989f8c64e1!2sBob-Linus%20Shipping%20Co.%20Behind%20Jehova%20Witness%20Church%20Comm.%204%20Accra%20Ghana!5e0!3m2!1sen!2s!4v1735593847392!5m2!1sen!2s"
                 width="100%"

@@ -159,7 +159,8 @@
   .animate-slide-down,
   .animate-fade-up,
   .animate-slide-in-left,
-  .animate-slide-in-right {
+  .animate-slide-in-right,
+  .animate-scale-x {
     animation-duration: 0.5s;
   }
   
@@ -215,7 +216,8 @@
   .animate-slide-down,
   .animate-fade-up,
   .animate-slide-in-left,
-  .animate-slide-in-right {
+  .animate-slide-in-right,
+  .animate-scale-x {
     animation: none;
     opacity: 1;
     transform: none;
