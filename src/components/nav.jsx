@@ -1,5 +1,6 @@
 // ...ex// ...ex// ...ex// ...existing code...
 import React, { useEffect, useRef, useState } from 'react';
+import { Search, X, Menu, ChevronDown, Info, Phone, CreditCard } from 'lucide-react';
 
 export default function Nav() {
   const [open, setOpen] = useState(false); // mobile menu
@@ -12,15 +13,34 @@ export default function Nav() {
   const searchInputRef = useRef(null);
   const overlaySearchInputRef = useRef(null);
   const [overlaySearchOpen, setOverlaySearchOpen] = useState(false);
+  const [trackingOpen, setTrackingOpen] = useState(false);
+  const [trackingId, setTrackingId] = useState('');
+  const trackingRef = useRef(null);
+
+  function trackNavClick(label, href) {
+    const payload = { event: 'nav_click', label, href, ts: Date.now() };
+    try {
+      window.dataLayer = window.dataLayer || []; window.dataLayer.push(payload);
+    } catch (err) { void err; }
+    console.log('TRACK:', payload);
+  }
+
+  function handleTrackSubmit(e) {
+    e.preventDefault();
+    const id = (trackingId || '').trim();
+    if (!id) return trackingRef.current?.focus();
+    window.location.href = `/tracking?id=${encodeURIComponent(id)}`;
+  }
 
   // close dropdowns/search when clicking outside (use pointerdown for touch/mouse)
   useEffect(() => {
     function onDoc(event) {
       // if click/touch is inside any element marked with data-services or data-search, don't close
-      if (event.target.closest && (event.target.closest('[data-services]') || event.target.closest('[data-search]'))) return;
+      if (event.target.closest && (event.target.closest('[data-services]') || event.target.closest('[data-search]') || event.target.closest('[data-tracking]'))) return;
       setServicesOpen(false);
       setServicesPersist(false);
       setSearchOpen(false);
+      setTrackingOpen(false);
     }
     document.addEventListener('pointerdown', onDoc);
     return () => document.removeEventListener('pointerdown', onDoc);
@@ -64,6 +84,7 @@ export default function Nav() {
         setSearchOpen(false);
         setOpen(false);
         setOverlaySearchOpen(false);
+        setTrackingOpen(false);
       }
     }
     if (servicesOpen || searchOpen || open) window.addEventListener('keydown', onKey);
@@ -129,9 +150,7 @@ export default function Nav() {
                   className="flex items-center gap-2 text-sm text-slate-950 hover:text-[#08aff1]"
                 >
                 Services
-                <svg className={`w-4 h-4 transition-transform ${servicesOpen ? 'rotate-180' : ''}`} viewBox="0 0 20 20" fill="currentColor" aria-hidden>
-                  <path fillRule="evenodd" d="M5.23 7.21a.75.75 0 011.06-.02L10 10.584l3.71-3.396a.75.75 0 011.02 1.1l-4.24 3.882a.75.75 0 01-1.02 0L5.25 8.29a.75.75 0 01-.02-1.08z" clipRule="evenodd" />
-                </svg>
+                <ChevronDown className={`w-4 h-4 transition-transform ${servicesOpen ? 'rotate-180' : ''}`} aria-hidden />
               </button>
 
               {/* Desktop dropdown */}
@@ -153,8 +172,41 @@ export default function Nav() {
               </div>
             </div>
 
-            <a href="#about" className="text-sm text-slate-950 hover:text-[#08aff1]">About</a>
-            <a href="#contact" className="text-sm text-slate-950 hover:text-[#08aff1]">Contact</a>
+            <a href="#about" onClick={() => trackNavClick('About', '#about')} className="flex items-center gap-2 text-sm text-slate-950 hover:text-[#08aff1]"><Info className="w-4 h-4 text-slate-700"/>About</a>
+            <a href="#contact" onClick={() => trackNavClick('Contact', '#contact')} className="flex items-center gap-2 text-sm text-slate-950 hover:text-[#08aff1]"><Phone className="w-4 h-4 text-slate-700"/>Contact</a>
+
+            {/* Desktop tracking dropdown (like Services) */}
+            <div className="relative" data-tracking>
+              <button
+                type="button"
+                aria-expanded={trackingOpen}
+                aria-controls="tracking-menu-desktop"
+                onPointerDown={(e) => e.stopPropagation()}
+                onMouseDown={(e) => e.stopPropagation()}
+                onClick={(e) => { e.stopPropagation(); setTrackingOpen((s) => !s); }}
+                className="flex items-center gap-2 text-sm text-slate-950 hover:text-[#08aff1]"
+              >
+                Track
+                <ChevronDown className={`w-4 h-4 transition-transform ${trackingOpen ? 'rotate-180' : ''}`} aria-hidden />
+              </button>
+
+              <div
+                id="tracking-menu-desktop"
+                role="menu"
+                className={`absolute left-0 mt-2 w-80 bg-white border rounded-md shadow-lg ring-1 ring-black/5 transition-opacity duration-150 ${trackingOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`}
+                aria-hidden={!trackingOpen}
+              >
+                <div className="p-3">
+                  <form onSubmit={handleTrackSubmit} className="flex items-center gap-2" data-tracking>
+                    <input ref={trackingRef} value={trackingId} onChange={(e) => setTrackingId(e.target.value)} placeholder="Enter tracking id" className="flex-1 px-2 py-1 border rounded-md text-sm text-black placeholder:text-slate-400" />
+                    <button type="submit" className="px-3 py-1 bg-[#08aff1] text-white rounded-md text-sm flex items-center gap-2">
+                      <Search className="w-4 h-4" color="#334155" />
+                      Track
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* CTA + Mobile toggle */}
@@ -168,7 +220,7 @@ export default function Nav() {
                 onClick={() => setOverlaySearchOpen(true)}
                 className="inline-flex items-center justify-center p-2 rounded-md text-slate-700 hover:bg-slate-100"
               >
-                🔍
+                <Search className="w-5 h-5" />
               </button>
             </div>
             {/* Desktop search (togglable) */}
@@ -195,17 +247,21 @@ export default function Nav() {
                   className="p-2 rounded-md hover:bg-slate-100"
                   aria-label="Open search"
                 >
-                  🔍
+                  <Search className="w-5 h-5" />
                 </button>
               )}
             </div>
 
             <a
               href="/get-quote"
-              className="hidden md:inline-block px-4 py-2 rounded-md bg-[#08aff1] text-white text-sm font-medium hover:bg-[#5bc6f0]"
+              onClick={() => trackNavClick('Get a Quote', '/get-quote')}
+              className="hidden md:inline-flex items-center gap-2 px-4 py-2 rounded-md bg-[#08aff1] text-white text-sm font-medium hover:bg-[#5bc6f0]"
             >
+              <CreditCard className="w-4 h-4 text-white" />
               Get a Quote
             </a>
+
+            {/* removed duplicate desktop tracking form - tracking is handled via the Track dropdown above */}
 
             {/* mobile menu toggle */}
             <button
@@ -214,13 +270,7 @@ export default function Nav() {
               onClick={() => setOpen((v) => !v)}
               className="md:hidden inline-flex flex-none items-center justify-center p-2 rounded-md text-slate-700 hover:bg-slate-100"
             >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                {open ? (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-                ) : (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
-                )}
-              </svg>
+              {open ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
 
           </div>
@@ -244,9 +294,7 @@ export default function Nav() {
             >
               <span className="block">Services</span>
               {/* chevron positioned absolute on the right */}
-              <svg className={`w-4 h-4 absolute right-3 transition-transform ${servicesOpen ? 'rotate-180' : ''}`} viewBox="0 0 20 20" fill="currentColor" aria-hidden>
-                <path fillRule="evenodd" d="M5.23 7.21a.75.75 0 011.06-.02L10 10.584l3.71-3.396a.75.75 0 011.02 1.1l-4.24 3.882a.75.75 0 01-1.02 0L5.25 8.29a.75.75 0 01-.02-1.08z" clipRule="evenodd" />
-              </svg>
+              <ChevronDown className={`w-4 h-4 absolute right-3 transition-transform ${servicesOpen ? 'rotate-180' : ''}`} aria-hidden />
             </button>
           </div>
 
@@ -265,6 +313,35 @@ export default function Nav() {
           <a href="#about" onClick={() => setOpen(false)} className="block text-sm text-slate-700 text-center">About</a>
           <a href="#contact" onClick={() => setOpen(false)} className="block text-sm text-slate-700 text-center">Contact</a>
           <a href="/get-quote" onClick={() => setOpen(false)} className="block mt-2 px-4 py-2 rounded-md bg-emerald-600 text-white text-sm text-center">Get a Quote</a>
+
+          {/* Mobile Track collapsible */}
+          <div className="mt-2">
+            <div className="relative" data-tracking>
+              <button
+                type="button"
+                aria-controls="tracking-menu-mobile"
+                onPointerDown={(e) => e.stopPropagation()}
+                onMouseDown={(e) => e.stopPropagation()}
+                onClick={(e) => { e.stopPropagation(); setTrackingOpen((s) => !s); }}
+                className="w-full flex items-center justify-between px-4 py-2 text-sm text-slate-700 bg-slate-50 rounded-md"
+              >
+                <span>Track</span>
+                <ChevronDown className={`w-4 h-4 transition-transform ${trackingOpen ? 'rotate-180' : ''}`} aria-hidden />
+              </button>
+            </div>
+
+            <div id="tracking-menu-mobile" className={`overflow-hidden transition-[max-height] duration-200 ${trackingOpen ? 'max-h-40' : 'max-h-0'}`}>
+              <div className="px-4 pt-3 pb-2">
+                <form onSubmit={(e) => { handleTrackSubmit(e); setOpen(false); }} className="flex items-center gap-2" data-tracking>
+                  <input ref={trackingRef} value={trackingId} onChange={(e) => setTrackingId(e.target.value)} placeholder="Tracking ID" className="flex-1 px-2 py-1 border rounded-md text-sm text-black placeholder:text-slate-400" />
+                  <button type="submit" className="px-3 py-1 bg-[#08aff1] text-white rounded-md text-sm flex items-center gap-2">
+                    <Search className="w-4 h-4" color="#334155" />
+                    Track
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </nav>
@@ -284,7 +361,7 @@ export default function Nav() {
                   aria-label="Site search"
                 />
               <button type="submit" className="px-4 py-2 bg-[#08aff1] text-white rounded-md">Search</button>
-              <button type="button" onClick={() => setOverlaySearchOpen(false)} aria-label="Close search" className="p-2 text-slate-600">✕</button>
+              <button type="button" onClick={() => setOverlaySearchOpen(false)} aria-label="Close search" className="p-2 text-slate-600"><X className="w-4 h-4" /></button>
             </div>
             <div className="mt-3 text-sm text-slate-700">
               {/* placeholder suggestions */}
@@ -301,4 +378,3 @@ export default function Nav() {
     </>
   );
 }
-// ...existing code...
