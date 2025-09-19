@@ -11,10 +11,12 @@ export default function HomePage() {
   const [yearsCount, setYearsCount] = useState(0);
   const [clientsCount, setClientsCount] = useState(0);
   const [hasAnimated, setHasAnimated] = useState(false);
+  const [servicesAnimated, setServicesAnimated] = useState(false);
   const quoteFirstRef = useRef(null);
   const quoteLastRef = useRef(null);
   const ctaRef = useRef(null);
   const experienceSectionRef = useRef(null);
+  const servicesSectionRef = useRef(null);
 
   const heroSlides = [
     {
@@ -170,6 +172,34 @@ export default function HomePage() {
     };
   }, [hasAnimated]); // Depend on hasAnimated to prevent re-running
 
+  // Services section animation with intersection observer
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !servicesAnimated) {
+            setServicesAnimated(true);
+          }
+        });
+      },
+      {
+        threshold: 0.2, // Trigger when 20% of the section is visible
+        rootMargin: '0px 0px -50px 0px'
+      }
+    );
+
+    const currentElement = servicesSectionRef.current;
+    if (currentElement) {
+      observer.observe(currentElement);
+    }
+
+    return () => {
+      if (currentElement) {
+        observer.unobserve(currentElement);
+      }
+    };
+  }, [servicesAnimated]);
+
   return (
     <div id="main" className="min-h-screen">
       {/* Hero Carousel Section - Full Width Background */}
@@ -208,22 +238,53 @@ export default function HomePage() {
           <div className="container mx-auto text-center text-white">
             <div className="max-w-5xl mx-auto space-y-6 md:space-y-8">
               {/* Service indicator */}
-              <div className="flex items-center justify-center gap-2 text-[#08aff1] font-medium">
+              <div 
+                key={`indicator-${currentSlide}`}
+                className="flex items-center justify-center gap-2 text-[#08aff1] font-medium animate-slide-down" 
+                style={{ animationDelay: '0.1s' }}
+              >
                 {heroSlides[currentSlide].icon}
                 <span className="text-xs sm:text-sm uppercase tracking-wider">{heroSlides[currentSlide].highlight}</span>
               </div>
               
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold leading-tight hero-text-shadow">
-                <span className="block text-white">{heroSlides[currentSlide].subtitle}</span>
-                <span className="text-[#08aff1] block">{heroSlides[currentSlide].title}</span>
+              <h1 
+                key={`title-${currentSlide}`}
+                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold leading-tight hero-text-shadow"
+              >
+                <span 
+                  className="block text-white animate-slide-down" 
+                  style={{ animationDelay: '0.2s' }}
+                >
+                  {heroSlides[currentSlide].subtitle}
+                </span>
+                <span 
+                  className="text-[#08aff1] block animate-slide-up" 
+                  style={{ animationDelay: '0.3s' }}
+                >
+                  {heroSlides[currentSlide].title}
+                </span>
               </h1>
               
-              <p className="text-lg sm:text-xl md:text-2xl text-gray-100 leading-relaxed max-w-4xl mx-auto hero-subtitle-shadow">
+              <p 
+                key={`description-${currentSlide}`}
+                className="text-lg sm:text-xl md:text-2xl text-gray-100 leading-relaxed max-w-4xl mx-auto hero-subtitle-shadow animate-slide-up" 
+                style={{ animationDelay: '0.4s' }}
+              >
                 {heroSlides[currentSlide].description}
               </p>
-              <p className="text-sm text-gray-200 hero-subtitle-shadow">Free quotes • Typical response within 24 hours</p>
+              <p 
+                key={`cta-text-${currentSlide}`}
+                className="text-sm text-gray-200 hero-subtitle-shadow animate-slide-down" 
+                style={{ animationDelay: '0.5s' }}
+              >
+                Free quotes • Typical response within 24 hours
+              </p>
 
-              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4 md:pt-8">
+              <div 
+                key={`buttons-${currentSlide}`}
+                className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4 md:pt-8 animate-slide-up" 
+                style={{ animationDelay: '0.6s' }}
+              >
                 <button 
                   ref={ctaRef} 
                   onClick={openQuote} 
@@ -285,14 +346,14 @@ export default function HomePage() {
       </section>
 
       {/* Services Section */}
-      <section className="py-20 bg-white">
+      <section ref={servicesSectionRef} className="py-20 bg-white">
         <div className="w-full px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-slate-900 mb-4">
+          <div className={`text-center mb-16 transition-all duration-800 ${servicesAnimated ? 'animate-fade-up' : 'opacity-0 translate-y-8'}`}>
+            <h2 className={`text-4xl font-bold text-slate-900 mb-4 transition-all duration-800 delay-200 ${servicesAnimated ? 'animate-slide-down' : 'opacity-0 -translate-y-8'}`}>
              Bob-Linus SHIPPING AND LOGISTICS <span className="text-[#08aff1]">SERVICES</span>
             </h2>
-            <div className="w-16 h-1 bg-[#08aff1] mx-auto mb-8"></div>
-            <div className="max-w-3xl mx-auto text-center space-y-2">
+            <div className={`w-16 h-1 bg-[#08aff1] mx-auto mb-8 transition-all duration-600 delay-400 ${servicesAnimated ? 'opacity-100 scale-x-100' : 'opacity-0 scale-x-0'}`}></div>
+            <div className={`max-w-3xl mx-auto text-center space-y-2 transition-all duration-800 delay-600 ${servicesAnimated ? 'animate-slide-up' : 'opacity-0 translate-y-8'}`}>
               <p className="text-lg text-slate-600">
                 Bob-Linus Shipping and Logistics is more than logistics.
               </p>
@@ -304,11 +365,11 @@ export default function HomePage() {
 
           <div className="grid md:grid-cols-3 gap-12 max-w-6xl mx-auto">
             {/* Air Freight Forwarding */}
-            <div className="text-center group">
-              <div className="w-24 h-24 mx-auto mb-6 flex items-center justify-center">
-                <Plane className="w-20 h-20 text-slate-600 group-hover:text-[#08aff1] transition-colors" />
+            <div className={`text-center group transition-all duration-800 delay-100 ${servicesAnimated ? 'animate-fade-up' : 'opacity-0 translate-y-12'}`}>
+              <div className="w-24 h-24 mx-auto mb-6 flex items-center justify-center transform transition-all duration-300 hover:scale-110 hover:rotate-3">
+                <Plane className="w-20 h-20 text-slate-600 group-hover:text-[#08aff1] transition-colors duration-300" />
               </div>
-              <h3 className="text-2xl font-bold text-slate-900 mb-4">Air Freight Forwarding</h3>
+              <h3 className="text-2xl font-bold text-slate-900 mb-4 group-hover:text-[#08aff1] transition-colors duration-300">Air Freight Forwarding</h3>
               <p className="text-slate-600 leading-relaxed">
                 As a leader in global air freight forwarding, Global Shipping and Logistics excels in providing 
                 tailored transportation.
@@ -316,22 +377,22 @@ export default function HomePage() {
             </div>
 
             {/* Ocean Freight Forwarding */}
-            <div className="text-center group">
-              <div className="w-24 h-24 mx-auto mb-6 flex items-center justify-center">
-                <Ship className="w-20 h-20 text-slate-600 group-hover:text-[#08aff1] transition-colors" />
+            <div className={`text-center group transition-all duration-800 delay-300 ${servicesAnimated ? 'animate-fade-up' : 'opacity-0 translate-y-12'}`}>
+              <div className="w-24 h-24 mx-auto mb-6 flex items-center justify-center transform transition-all duration-300 hover:scale-110 hover:rotate-3">
+                <Ship className="w-20 h-20 text-slate-600 group-hover:text-[#08aff1] transition-colors duration-300" />
               </div>
-              <h3 className="text-2xl font-bold text-slate-900 mb-4">Ocean Freight Forwarding</h3>
+              <h3 className="text-2xl font-bold text-slate-900 mb-4 group-hover:text-[#08aff1] transition-colors duration-300">Ocean Freight Forwarding</h3>
               <p className="text-slate-600 leading-relaxed">
                 Ocean Freight plays perhaps the most vital role in most transportation and supply chain solutions.
               </p>
             </div>
 
             {/* Road Freight Forwarding */}
-            <div className="text-center group">
-              <div className="w-24 h-24 mx-auto mb-6 flex items-center justify-center">
-                <Truck className="w-20 h-20 text-slate-600 group-hover:text-[#08aff1] transition-colors" />
+            <div className={`text-center group transition-all duration-800 delay-500 ${servicesAnimated ? 'animate-fade-up' : 'opacity-0 translate-y-12'}`}>
+              <div className="w-24 h-24 mx-auto mb-6 flex items-center justify-center transform transition-all duration-300 hover:scale-110 hover:rotate-3">
+                <Truck className="w-20 h-20 text-slate-600 group-hover:text-[#08aff1] transition-colors duration-300" />
               </div>
-              <h3 className="text-2xl font-bold text-slate-900 mb-4">Road Freight Forwarding</h3>
+              <h3 className="text-2xl font-bold text-slate-900 mb-4 group-hover:text-[#08aff1] transition-colors duration-300">Road Freight Forwarding</h3>
               <p className="text-slate-600 leading-relaxed">
                 Cargo are transported at some stage of their journey along the world's roads where we give 
                 you a reassuring presence.
@@ -347,7 +408,7 @@ export default function HomePage() {
           {/* Header Section - Side by Side */}
           <div className="grid lg:grid-cols-2 gap-8 items-start mb-16">
             {/* Left - Title */}
-            <div>
+            <div className="animate-slide-in-left" style={{ animationDelay: '0.1s' }}>
               <h2 className="text-4xl font-bold mb-6">
                 OUR SPECIAL<br />
                 SERVICES
@@ -356,7 +417,7 @@ export default function HomePage() {
             </div>
             
             {/* Right - Description */}
-            <div>
+            <div className="animate-slide-in-right" style={{ animationDelay: '0.2s' }}>
               <p className="text-lg text-gray-300 leading-relaxed">
                 Our warehousing services are known nationwide to be one of the most reliable, safe 
                 and affordable, because we take pride in delivering the best of warehousing 
@@ -445,7 +506,7 @@ export default function HomePage() {
           <div className="grid lg:grid-cols-2 gap-16 items-start">
             {/* Left Side - Why Choose Us */}
             <div>
-              <div className="mb-12">
+              <div className="mb-12 animate-fade-up" style={{ animationDelay: '0.1s' }}>
                 <h2 className="text-4xl font-bold text-slate-900 mb-4">WHY CHOOSE US?</h2>
                 <div className="w-16 h-1 bg-[#08aff1] mb-8"></div>
               </div>
