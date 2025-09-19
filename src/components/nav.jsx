@@ -1,6 +1,6 @@
 // ...ex// ...ex// ...ex// ...existing code...
 import React, { useEffect, useRef, useState } from 'react';
-import { Search, X, Menu, ChevronDown, Info, Phone, CreditCard } from 'lucide-react';
+import { Search, X, Menu, ChevronDown, Info, Phone, CreditCard, Package } from 'lucide-react';
 
 export default function Nav() {
   const [open, setOpen] = useState(false); // mobile menu
@@ -184,6 +184,7 @@ export default function Nav() {
                 onClick={(e) => { e.stopPropagation(); setTrackingOpen((s) => !s); }}
                 className="flex items-center gap-2 text-sm text-slate-950 hover:text-[#08aff1]"
               >
+                <Package className="w-4 h-4 text-slate-700" />
                 Track
                 <ChevronDown className={`w-4 h-4 transition-transform ${trackingOpen ? 'rotate-180' : ''}`} aria-hidden />
               </button>
@@ -198,8 +199,7 @@ export default function Nav() {
                   <form onSubmit={handleTrackSubmit} className="flex items-center gap-2" data-tracking>
                     <input ref={trackingRef} value={trackingId} onChange={(e) => setTrackingId(e.target.value)} placeholder="Enter tracking id" className="flex-1 px-2 py-1 border rounded-md text-sm text-black placeholder:text-slate-400" />
                     <button type="submit" className="px-3 py-1 bg-[#08aff1] text-white rounded-md text-sm flex items-center gap-2">
-                      <Search className="w-4 h-4" color="#334155" />
-                      Track
+                      <Package className="w-4 h-4" />
                     </button>
                   </form>
                 </div>
@@ -233,7 +233,7 @@ export default function Nav() {
                     aria-label="Search services"
                   />
                   <button type="submit" className="px-3 py-1 bg-[#08aff1] text-white rounded-md text-sm">Go</button>
-                  <button type="button" onClick={(e) => { e.stopPropagation(); setSearchOpen(false); }} aria-label="Close search" className="ml-2 p-2">
+                  <button type="button" onClick={(e) => { e.stopPropagation(); setSearchOpen(false); }} aria-label="Close search" className="ml-2 p-2 text-[#060707]">
                     ✕
                   </button>
                 </form>
@@ -320,7 +320,10 @@ export default function Nav() {
                 onClick={(e) => { e.stopPropagation(); setTrackingOpen((s) => !s); }}
                 className="w-full flex items-center justify-between px-4 py-2 text-sm text-slate-700 bg-slate-50 rounded-md"
               >
-                <span>Track</span>
+                <div className="flex items-center gap-2">
+                  <Package className="w-4 h-4" />
+                  <span>Track</span>
+                </div>
                 <ChevronDown className={`w-4 h-4 transition-transform ${trackingOpen ? 'rotate-180' : ''}`} aria-hidden />
               </button>
             </div>
@@ -342,8 +345,7 @@ export default function Nav() {
                     />
                   </div>
                   <button type="submit" className="px-3 py-1 bg-[#08aff1] text-white rounded-md text-sm flex items-center gap-2">
-                    <Search className="w-4 h-4" color="#334155" />
-                    Track
+                    <Package className="w-4 h-4" />
                   </button>
                 </form>
               </div>
