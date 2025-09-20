@@ -134,7 +134,7 @@ export default function Nav() {
     >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          {/* Brand (not a link) */}
+          {/* Brand logo */}
           <div className="flex items-center gap-3 flex-shrink-0">
             <img src="/images/logo.png" alt="Bob-Linus logo" className="w-12 h-12 object-contain" />
             <div className="leading-tight whitespace-nowrap">

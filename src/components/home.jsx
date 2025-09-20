@@ -14,8 +14,12 @@ export default function HomePage() {
   const [servicesAnimated, setServicesAnimated] = useState(false);
   const [specialServicesAnimated, setSpecialServicesAnimated] = useState(false);
   const [contactAnimated, setContactAnimated] = useState(false);
+  const [trackingOpen, setTrackingOpen] = useState(false);
+  const [trackingId, setTrackingId] = useState('');
   const quoteFirstRef = useRef(null);
   const quoteLastRef = useRef(null);
+  const trackingFirstRef = useRef(null);
+  const trackingLastRef = useRef(null);
   const ctaRef = useRef(null);
   const experienceSectionRef = useRef(null);
   const servicesSectionRef = useRef(null);
@@ -85,6 +89,26 @@ export default function HomePage() {
     document.body.style.overflow = '';
   }
 
+  function openTracking() {
+    setTrackingOpen(true);
+    // lock body scroll when modal open
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeTracking() {
+    setTrackingOpen(false);
+    document.body.style.overflow = '';
+    setTrackingId(''); // Reset tracking ID
+  }
+
+  function handleTrackSubmit(e) {
+    e.preventDefault();
+    const id = (trackingId || '').trim();
+    if (!id) return trackingFirstRef.current?.focus();
+    // Navigate to the static tracking page served from public/
+    window.location.href = `/tracking/index.html?id=${encodeURIComponent(id)}`;
+  }
+
   function handleQuoteSubmit(e) {
     e.preventDefault();
     // front-end only: show a console message and close modal; integrate backend later
@@ -96,23 +120,41 @@ export default function HomePage() {
   // focus management for modal
   useEffect(() => {
     function onKey(e) {
-      if (!quoteOpen) return;
+      if (!quoteOpen && !trackingOpen) return;
       if (e.key === 'Escape') {
         e.preventDefault();
-        closeQuote();
-        ctaRef.current?.focus();
+        if (quoteOpen) {
+          closeQuote();
+          ctaRef.current?.focus();
+        } else if (trackingOpen) {
+          closeTracking();
+          ctaRef.current?.focus();
+        }
         return;
       }
       if (e.key === 'Tab') {
-        const first = quoteFirstRef.current;
-        const last = quoteLastRef.current;
-        if (!first || !last) return;
-        if (e.shiftKey && document.activeElement === first) {
-          e.preventDefault();
-          last.focus();
-        } else if (!e.shiftKey && document.activeElement === last) {
-          e.preventDefault();
-          first.focus();
+        if (quoteOpen) {
+          const first = quoteFirstRef.current;
+          const last = quoteLastRef.current;
+          if (!first || !last) return;
+          if (e.shiftKey && document.activeElement === first) {
+            e.preventDefault();
+            last.focus();
+          } else if (!e.shiftKey && document.activeElement === last) {
+            e.preventDefault();
+            first.focus();
+          }
+        } else if (trackingOpen) {
+          const first = trackingFirstRef.current;
+          const last = trackingLastRef.current;
+          if (!first || !last) return;
+          if (e.shiftKey && document.activeElement === first) {
+            e.preventDefault();
+            last.focus();
+          } else if (!e.shiftKey && document.activeElement === last) {
+            e.preventDefault();
+            first.focus();
+          }
         }
       }
     }
@@ -120,9 +162,12 @@ export default function HomePage() {
     if (quoteOpen) {
       // set initial focus briefly after open
       setTimeout(() => quoteFirstRef.current?.focus(), 60);
+    } else if (trackingOpen) {
+      // set initial focus briefly after open
+      setTimeout(() => trackingFirstRef.current?.focus(), 60);
     }
     return () => document.removeEventListener('keydown', onKey);
-  }, [quoteOpen]);
+  }, [quoteOpen, trackingOpen]);
 
   // Count-up animation effect with intersection observer
   useEffect(() => {
@@ -347,14 +392,17 @@ export default function HomePage() {
               >
                 <button 
                   ref={ctaRef} 
-                  onClick={openQuote} 
+                  onClick={openTracking} 
                   className="bg-[#08aff1] text-white px-8 sm:px-10 py-3 sm:py-4 rounded-lg text-base sm:text-lg font-semibold hover:bg-[#0694d1] transition-all duration-200 transform hover:-translate-y-0.5 hover:shadow-2xl flex items-center gap-2 justify-center focus:outline-none focus:ring-4 focus:ring-[#08aff1]/30 focus:ring-offset-2 w-full sm:w-auto sm:min-w-[200px] shadow-lg"
                 >
                   Track Shipment
                   <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
                 </button>
-                <button className="border-2 border-white text-white px-8 sm:px-10 py-3 sm:py-4 rounded-lg text-base sm:text-lg font-semibold hover:bg-white hover:text-gray-900 transition-all duration-200 hover:shadow-2xl focus:outline-none focus:ring-4 focus:ring-white/30 focus:ring-offset-2 w-full sm:w-auto sm:min-w-[200px] shadow-lg backdrop-blur-sm">
-                  Our Services
+                <button 
+                  onClick={openQuote} 
+                  className="border-2 border-white text-white px-8 sm:px-10 py-3 sm:py-4 rounded-lg text-base sm:text-lg font-semibold hover:bg-white hover:text-gray-900 transition-all duration-200 hover:shadow-2xl focus:outline-none focus:ring-4 focus:ring-white/30 focus:ring-offset-2 w-full sm:w-auto sm:min-w-[200px] shadow-lg backdrop-blur-sm"
+                >
+                  Get Quote
                 </button>
               </div>
             </div>
@@ -1053,6 +1101,48 @@ export default function HomePage() {
               <div className="flex gap-3">
                 <button type="submit" className="flex-1 bg-[#08aff1] text-white px-4 py-2 rounded-md">Request Quote</button>
                 <button ref={quoteLastRef} type="button" onClick={() => { closeQuote(); ctaRef.current?.focus(); }} className="flex-1 border rounded-md px-4 py-2">Cancel</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Tracking Modal */}
+      {trackingOpen && (
+        <div className="fixed inset-0 z-60 flex items-center justify-center p-4 bg-black/50" role="dialog" aria-modal="true" aria-labelledby="tracking-modal-title">
+          <div className="w-full max-w-md bg-white rounded-2xl p-6 modal-panel modal-panel-open">
+            <div className="flex justify-between items-center mb-4">
+              <h3 id="tracking-modal-title" className="text-xl font-bold text-slate-900">Track Your Shipment</h3>
+              <button onClick={closeTracking} aria-label="Close" className="p-2 text-slate-600 hover:text-black">×</button>
+            </div>
+            <div className="mb-4">
+              <p className="text-slate-600">Enter your tracking ID to check the status of your shipment.</p>
+            </div>
+            <form onSubmit={handleTrackSubmit} className="space-y-4">
+              <div>
+                <label className="sr-only" htmlFor="tracking-id">Tracking ID</label>
+                <input 
+                  id="tracking-id" 
+                  ref={trackingFirstRef} 
+                  value={trackingId} 
+                  onChange={(e) => setTrackingId(e.target.value)} 
+                  required 
+                  placeholder="Enter tracking ID (e.g., BL123456789)" 
+                  className="w-full px-3 py-3 border border-gray-300 rounded-md text-slate-900 placeholder-slate-500 focus:border-[#08aff1] focus:outline-none focus:ring-2 focus:ring-[#08aff1]/20" 
+                />
+              </div>
+              <div className="flex gap-3">
+                <button type="submit" className="flex-1 bg-[#08aff1] text-white px-4 py-3 rounded-md font-medium hover:bg-[#0694d1] transition-colors">
+                  Track Shipment
+                </button>
+                <button 
+                  ref={trackingLastRef} 
+                  type="button" 
+                  onClick={() => { closeTracking(); ctaRef.current?.focus(); }} 
+                  className="flex-1 border border-gray-300 rounded-md px-4 py-3 text-slate-700 hover:bg-gray-50 transition-colors"
+                >
+                  Cancel
+                </button>
               </div>
             </form>
           </div>
