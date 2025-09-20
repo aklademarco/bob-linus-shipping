@@ -30,7 +30,8 @@ export default function Nav() {
     e.preventDefault();
     const id = (trackingId || '').trim();
     if (!id) return trackingRef.current?.focus();
-    window.location.href = `/tracking?id=${encodeURIComponent(id)}`;
+    // Navigate to the static tracking page served from public/
+    window.location.href = `/tracking/index.html?id=${encodeURIComponent(id)}`;
   }
 
   // close dropdowns/search when clicking outside (use pointerdown for touch/mouse)
