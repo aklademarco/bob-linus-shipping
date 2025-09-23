@@ -176,17 +176,17 @@ export default function Nav() {
               >
                 <div className="py-2">
                  
-                  <a href="#transport" role="menuitem" className="block px-4 py-2 text-sm text-slate-700 hover:bg-[#08aff1] hover:text-white">Transport Services</a>
-                  <a href="#trans-shipment" role="menuitem" className="block px-4 py-2 text-sm text-slate-700 hover:bg-[#08aff1] hover:text-white">Trans-Shipment</a>
-                  <a href="#warehousing" role="menuitem" className="block px-4 py-2 text-sm text-slate-700 hover:bg-[#08aff1] hover:text-white">Warehousing Services</a>
-                  <a href="#vehicle-importation" role="menuitem" className="block px-4 py-2 text-sm text-slate-700 hover:bg-[#08aff1] hover:text-white">Vehicle importation</a>
-                  <a href="#shipping-services" role="menuitem" className="block px-4 py-2 text-sm text-slate-700 hover:bg-[#08aff1] hover:text-white">Shipping Services</a>
-                  <a href="#household-imports" role="menuitem" className="block px-4 py-2 text-sm text-slate-700 hover:bg-[#08aff1] hover:text-white">Importation of household items</a>
+                  <a href="/services#transport" role="menuitem" className="block px-4 py-2 text-sm text-slate-700 hover:bg-[#08aff1] hover:text-white">Transport Services</a>
+                  <a href="/services#trans-shipment" role="menuitem" className="block px-4 py-2 text-sm text-slate-700 hover:bg-[#08aff1] hover:text-white">Trans-Shipment</a>
+                  <a href="/services#warehousing" role="menuitem" className="block px-4 py-2 text-sm text-slate-700 hover:bg-[#08aff1] hover:text-white">Warehousing Services</a>
+                  <a href="/services#vehicle-importation" role="menuitem" className="block px-4 py-2 text-sm text-slate-700 hover:bg-[#08aff1] hover:text-white">Vehicle importation</a>
+                  <a href="/services#shipping-services" role="menuitem" className="block px-4 py-2 text-sm text-slate-700 hover:bg-[#08aff1] hover:text-white">Shipping Services</a>
+                  <a href="/services#household-imports" role="menuitem" className="block px-4 py-2 text-sm text-slate-700 hover:bg-[#08aff1] hover:text-white">Importation of household items</a>
                 </div>
               </div>
             </div>
 
-            <a href="#about" onClick={() => trackNavClick('About', '#about')} className="flex items-center gap-2 text-sm text-slate-950 hover:text-[#08aff1]"><Info className="w-4 h-4 text-slate-700"/>About</a>
+            <a href="/about" onClick={() => trackNavClick('About', '/about')} className="flex items-center gap-2 text-sm text-slate-950 hover:text-[#08aff1]"><Info className="w-4 h-4 text-slate-700"/>About</a>
             <a href="#contact" onClick={() => trackNavClick('Contact', '#contact')} className="flex items-center gap-2 text-sm text-slate-950 hover:text-[#08aff1]"><Phone className="w-4 h-4 text-slate-700"/>Contact</a>
 
             {/* Desktop tracking dropdown*/}
@@ -319,16 +319,16 @@ export default function Nav() {
           <div id="services-menu-mobile" className={`overflow-hidden transition-[max-height] duration-200 ${servicesOpen ? 'max-h-60' : 'max-h-0'}`}>
             <div className="pl-4 space-y-1">
               
-              <a href="#transport" onClick={() => { setOpen(false); setServicesOpen(false); setServicesPersist(false); }} className="block text-sm text-slate-700 py-1">Transport Services</a>
-              <a href="#trans-shipment" onClick={() => { setOpen(false); setServicesOpen(false); setServicesPersist(false); }} className="block text-sm text-slate-700 py-1">Trans-Shipment</a>
-              <a href="#warehousing" onClick={() => { setOpen(false); setServicesOpen(false); setServicesPersist(false); }} className="block text-sm text-slate-700 py-1">Warehousing Services</a>
-              <a href="#vehicle-importation" onClick={() => { setOpen(false); setServicesOpen(false); setServicesPersist(false); }} className="block text-sm text-slate-700 py-1">Vehicle importation</a>
-              <a href="#shipping-services" onClick={() => { setOpen(false); setServicesOpen(false); setServicesPersist(false); }} className="block text-sm text-slate-700 py-1">Shipping Services</a>
-              <a href="#household-imports" onClick={() => { setOpen(false); setServicesOpen(false); setServicesPersist(false); }} className="block text-sm text-slate-700 py-1">Importation of household items</a>
+              <a href="/services#transport" onClick={() => { setOpen(false); setServicesOpen(false); setServicesPersist(false); }} className="block text-sm text-slate-700 py-1">Transport Services</a>
+              <a href="/services#trans-shipment" onClick={() => { setOpen(false); setServicesOpen(false); setServicesPersist(false); }} className="block text-sm text-slate-700 py-1">Trans-Shipment</a>
+              <a href="/services#warehousing" onClick={() => { setOpen(false); setServicesOpen(false); setServicesPersist(false); }} className="block text-sm text-slate-700 py-1">Warehousing Services</a>
+              <a href="/services#vehicle-importation" onClick={() => { setOpen(false); setServicesOpen(false); setServicesPersist(false); }} className="block text-sm text-slate-700 py-1">Vehicle importation</a>
+              <a href="/services#shipping-services" onClick={() => { setOpen(false); setServicesOpen(false); setServicesPersist(false); }} className="block text-sm text-slate-700 py-1">Shipping Services</a>
+              <a href="/services#household-imports" onClick={() => { setOpen(false); setServicesOpen(false); setServicesPersist(false); }} className="block text-sm text-slate-700 py-1">Importation of household items</a>
             </div>
           </div>
 
-          <a href="#about" onClick={() => setOpen(false)} className="block text-sm text-slate-700 text-center">About</a>
+          <a href="/about" onClick={() => setOpen(false)} className="block text-sm text-slate-700 text-center">About</a>
           <a href="#contact" onClick={() => setOpen(false)} className="block text-sm text-slate-700 text-center">Contact</a>
           <a href="/get-quote" onClick={() => setOpen(false)} className="block mt-2 px-4 py-2 rounded-md bg-emerald-600 text-white text-sm text-center">Get a Quote</a>
 
